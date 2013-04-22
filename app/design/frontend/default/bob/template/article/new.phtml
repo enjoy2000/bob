@@ -1,0 +1,52 @@
+<div id="page-content">
+   <br />
+   <form action="<?php echo $this->getBaseUrl() ?>article/index/new" method="post">
+      <div class="one-half">
+         <fieldset id="contactForm">
+            <p>
+               Statement:<br /><input id="id_title" type="text" name="title" maxlength="100"/>
+            </p>
+            <p>
+               Description:<br /><textarea id="id_description" rows="10" cols="40" name="content"></textarea>
+            </p>
+         </fieldset>
+      </div>
+      <div class="one-helf last">
+         <fieldset id="btcForm">
+            <p>
+               Category:<br />
+               <select name="category" id="id_category">                  
+                  <option></option>
+                  <?php foreach($this->getData('categories') as $k => $v): ?>
+                  <option value="<?php echo $v['name'] ?>"><?php echo $v['name'] ?></option>                  
+                  <?php endforeach; ?>                  
+               </select>
+            </p>
+            <br />Your bet:<br /><input type="text" name="betAmount" id="id_betAmount" />
+         </fieldset>
+         <fieldset>
+            <ul>
+               <li><label for="id_betSide_0"><input type="radio" id="id_betSide_0" value="1" name="betSide"/> Agree</label></li>
+               <li><label for="id_betSide_1"><input type="radio" id="id_betSide_1" value="2" name="betSide"/> Disagree</label></li>
+            </ul>
+         </fieldset>
+      </div>
+      <div class="clear "></div>
+      <fieldset id="flight">
+         <label class=""> 
+         Event date<br /> 
+         <input maxlength="524288" name="eventtime" type="date"/> 
+         </label><br />
+         <label class=""> 
+         Bet deadline<br />  
+         <input maxlength="524288" name="deadlinetime" type="date"/> 
+         </label>
+      </fieldset>
+      <div id="contactForm"><input type="submit" value="Submit" name="submit" id="submit"/></div>
+   </form>
+   <p>Submission fee of 0.1 will apply.<br />
+      Moderators may make editorial changes.<br />
+      All dates correspond to end of day Eastern Time.<br />
+      You can give us <a href="mailto:john@reid.cc">feedback</a> if you have any troubles.
+   </p>	
+</div>

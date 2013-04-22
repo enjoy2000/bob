@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <article_index_index>
+        <reference name="content">
+             <block type="core/template" name="article" template="article/article.phtml" />
+        </reference>
+    </article_index_index>
+    <article_index_new>
+        <reference name="content">
+             <block type="core/template" name="article/new" template="article/new.phtml" />
+        </reference>
+    </article_index_new>
+</layout>

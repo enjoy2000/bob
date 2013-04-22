@@ -1,0 +1,166 @@
+<div id="page-content">
+    <br />
+<ul class="filter">
+	<li>Status:</li>
+	<li<?php if(!$this->getRequest()->getParam('status') || ($this->getRequest()->getParam('status') == 'available')){ echo ' class="active"';} ?>><a href="?status=available&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>">Available</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('status') == 'waiting'){echo ' class="active"';} ?>><a href="?status=waiting&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>"">Waiting</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('status') == 'closed'){echo ' class="active"';} ?>><a href="?status=closed&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>"">Closed</a></li>
+	
+</ul>
+
+<ul class="filter">
+	<li>Category:</li>
+    <li<?php if(!$this->getRequest()->getParam('category')){ echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>">All</a></li>
+    <?php foreach($this->getData('categories') as $k => $v): ?>
+    <li<?php if($this->getRequest()->getParam('category') == $v['name']){echo ' class="active"';} ?>><a href="?status=<?php if($this->getRequest()->getParam('status')){echo $this->getRequest()->getParam('status');}else{echo 'available';} ?>&category=<?php echo $v['name'] ?>&order=<?php if($this->getRequest()->getParam('order')){ echo $this->getRequest()->getParam('order');}else{echo 'total_bets';} ?>">
+    <?php echo $v['name'] ?></a></li>
+    <?php endforeach; ?>
+</ul>
+
+<ul class="filter">
+	<li>Order:</li>
+	<li<?php if(!$this->getRequest()->getParam('order') || ($this->getRequest()->getParam('order') == 'total_bets')){ echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>">Highest Bets</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('order') == '-total_bets'){echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>&order=-total_bets">Lowest Bets</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('order') == '-deadline_time'){echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>&order=-deadline_time">Earliest deadline</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('order') == 'deadline_time'){echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>&order=deadline_time">Latest deadline</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('order') == 'created_time'){echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>&order=created_time">Newest</a></li>
+	
+	<li<?php if($this->getRequest()->getParam('order') == '-created_time'){echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&category=<?php echo $this->getRequest()->getParam('category') ?>&order=-created_time">Oldest</a></li>
+	
+</ul>
+	
+<br />	
+<h6 class="line-divider">Available statements in all categories</h6>
+
+<?php 
+        foreach ($this->getData('articles') as $article): ?>
+<div class="filter">
+    <a href="#"><h6><?php echo $article->getTitle() ?></h6></a>
+    <li class="agree"><?php echo $article->getAgree() ?></li>
+	<li class="disagree"><?php echo $article->getDisagree() ?></li>    
+    <li class="active"><?php
+    $unix_time = $article->getDeadlineTime();   
+    $unix_time = strtotime($unix_time);
+    $current_time = time();
+    $diff = $unix_time - $current_time;
+    //$diff should be positive and not 0
+    if( 1 > $diff ){
+       echo $article->getStatus();
+    } else {
+        $y = round($diff/31536000, 0 , PHP_ROUND_HALF_DOWN);
+        $m = $diff/86400/30 % 12;
+        $w = $diff / 86400 / 7 % 4;
+        $d = $diff / 86400 % 7;
+        $h = $diff / 3600 % 24;
+        if($y > 0){
+        $we = "{$y} years, {$m} months"; 
+            if($y == 1){
+                $we = "{$y} year, {$m} months";
+                if($m == 1){
+                    $we = "{$y} year, {$m} month";
+                }
+                elseif($m < 1){
+                    $we = "{$y} year";
+                }
+            }
+            else{
+                $we = "{$y} yearss, {$m} months";
+                if($m == 1){
+                    $we = "{$y} years, {$m} month";
+                }
+                elseif($m < 0){
+                    $we = "{$y} years";
+                }
+            }
+                    
+       }
+       else{
+        if($m > 0){
+            $we = "{$m} months, {$w} weeks"; 
+            if($m == 1){
+                $we = "{$m} month, {$w} weeks";
+                if($w == 1){
+                    $we = "{$m} month, {$w} week"; 
+                }
+                elseif($w < 1){
+                    $we = "{$m} month";
+                } 
+            }
+            else{
+                $we = "{$m} months, {$w} weeks";
+                if($w == 1){
+                    $we = "{$m} months, {$w} week"; 
+                }
+                elseif($w < 1){
+                    $we = "{$m} months";
+                } 
+            }           
+        }
+        else{
+            if( $w > 0){ 
+                if($w == 1){
+                    $we = "{$w} week, {$d} days";
+                    if($d == 1){
+                        $we = "{$w} week, {$d} day";
+                    }
+                    elseif($d < 1){
+                        $we = "{$w} week";
+                    }
+                }
+                else{
+                    $we = "{$w} weeks, {$d} days";
+                    if($d == 1){
+                        $we = "{$w} weeks, {$d} day";
+                    }
+                    elseif($d < 1){
+                        $we = "{$w} weeks";
+                    }
+                }                
+            }        
+           else{
+            $we = "{$d} days, {$h} hours";
+            if($d == 1){
+                $we = "{$d} day, {$h} hours";
+                if($h == 1){
+                    $we = "{$d} day, {$h} hour";
+                }
+                elseif($h < 1){
+                    $we = "{$d} day";
+                }
+            }
+            elseif($d < 1){
+                $we = "{$h} hours";
+                if($h == 1){
+                    $we = "{$h} hour";
+                }
+                elseif($h < 1){
+                    $we = "just a few minutes more";
+                }
+            }
+            else{
+                $we = "{$d} days, {$h} hours";
+                if($h == 1){
+                    $we = "{$d} dasy, {$h} hour";
+                }
+                elseif($h < 1){
+                    $we = "{$d} days";
+                }
+            }
+           }
+       }
+       }      
+       
+    echo $we;
+    }
+    ?>
+    </li>
+ </div>
+<?php endforeach; ?>
+
+</div>
