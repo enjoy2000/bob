@@ -194,4 +194,25 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     	$customer->setBalance(11.11)->save();
     	var_dump($customer);
     }
+
+    public function test2Action()
+    {
+        if($this->getRequest()->getParam('id') > 0){
+            try{
+                $model = Mage::getModel('article/article');
+                $model->setId($this->getRequest()->getParam('id'))->delete();
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
+                $this->_redirect('*/*/');
+            } catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/edit', 'id' => $this->getRequest()->getParam('id'));
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+
+    public function test3Action()
+    {
+
+    }
 }
