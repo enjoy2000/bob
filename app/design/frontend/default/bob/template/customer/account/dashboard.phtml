@@ -24,22 +24,84 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div class="dashboard">
-    <div class="page-title">
-        <h1><?php echo $this->__('My Dashboard') ?></h1>
-    </div>
-    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-    <?php echo $this->getChildHtml('hello') ?>
-    <?php echo $this->getChildHtml('top') ?>
-    <div class="box-account box-info">
-        <div class="box-head">
-            <h2><?php echo $this->__('Account Information') ?></h2>
-        </div>
-        <?php /* Extensions placeholder */ ?>
-        <?php echo $this->getChildHtml('customer.account.dashboard.extra') ?>
-        <?php echo $this->getChildHtml('info') ?>
-        <?php echo $this->getChildHtml('address') ?>
-    </div>
-    <?php echo $this->getChildHtml('info1') ?>
-    <?php echo $this->getChildHtml('info2') ?>
+<?php 
+    $articles = Mage::getModel('article/article')->getCollection();
+    $articles->setPageSize(5);
+    $articles->setCurPage(1);
+    $articles->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getEmail());
+    $awaiting = $articles->addFieldToFilter('status', 'awaiting')->load();
+?>
+
+<div id="page-content">
+   <br />
+   <h4 class="line-divider"><?php echo $this->__('Account details') ?></h4>
+   <?php echo $this->getChildHtml('info'); ?>
+   Please <a href="mailto:john@reid.cc">let us know</a> if you have any issues with your account.<br /><br />
+   <h4 class="line-divider">Your statements</h4>   
+   <h6 class="toggle-trigger"><a href="#">Your statements awaiting approval (<?php echo count($awaiting) ?>)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any statement awaiting approval.
+         </p>
+      </div>
+   </div>
+   <h6 class="toggle-trigger"><a href="#">Your statements available for betting (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any statement available for betting.
+         </p>
+      </div>
+   </div>
+   <h6 class="toggle-trigger"><a href="#">Your waiting statements (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any waiting statement.
+         </p>
+      </div>
+   </div>
+   <h6 class="toggle-trigger"><a href="#">Your closed statements (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any closed statement.
+         </p>
+      </div>
+   </div>
+   <h6 class="toggle-trigger"><a href="#">Your rejected statements (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any rejected statement.
+         </p>
+      </div>
+   </div>
+   <br />
+   <h4 class="line-divider">Your bets</h4>
+   <h6 class="toggle-trigger"><a href="#">Your open bets (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any open bet.
+         </p>
+      </div>
+   </div>
+   <h6 class="toggle-trigger"><a href="#">Your closed bets (0)</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         <p>
+            You don't have any closed bet.
+         </p>
+      </div>
+   </div>
+   <br />
+   <h4 class="line-divider">Your transactions</h4>
+   <h6 class="toggle-trigger"><a href="#">Your most recent transactions</a></h6>
+   <div class="toggle-container" style="display: none;">
+      <div class="block">
+         You don't have any transactions yet.
+      </div>
+   </div>
 </div>

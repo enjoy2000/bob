@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bob_Article>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </Bob_Article>
     </modules>
     <frontend>
@@ -33,6 +33,12 @@
                 </args>
             </article>
         </routers>
+        
+    	<fieldsets>
+    		<customer_account>
+    			<balance2><create>1</create><update>1</update></balance2>
+    		</customer_account>
+    	</fieldsets>
     </admin>
     <adminhtml>
         <menu>
@@ -72,6 +78,11 @@
         </layout>
     </adminhtml>   
     <global>
+    	<fieldsets>
+    		<customer_account>
+    			<balance><create>1</create><update>1</update></balance>
+    		</customer_account>
+    	</fieldsets>
         <models>
             <category>
                 <class>Bop_Article_Model</class>
@@ -87,6 +98,9 @@
                     <article>
                         <table>article</table>
                     </article>
+                    <category>
+                    	<table>article_category</table>
+                    </category>
                 </entities>
             </article_mysql4>
         </models>
@@ -94,7 +108,7 @@
             <article_setup>
                   <setup>
                     <module>Bob_Article</module>
-                    <class>Bob_Article_Model_Resource_Mysql4_Setup</class>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
                   </setup>
                 <connection>
                     <use>core_setup</use>

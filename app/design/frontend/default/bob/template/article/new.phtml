@@ -1,6 +1,6 @@
-<div id="page-content">
-   <br />
-   <form action="<?php echo $this->getBaseUrl() ?>article/index/new" method="post">
+    <br />
+    
+   <form action="<?php echo $this->getBaseUrl() ?>article/index/new" method="post" id="new_article">
       <div class="one-half">
          <fieldset id="contactForm">
             <p>
@@ -15,14 +15,14 @@
          <fieldset id="btcForm">
             <p>
                Category:<br />
-               <select name="category" id="id_category">                  
+               <select name="category" id="id_category" class="required-entry">                  
                   <option></option>
                   <?php foreach($this->getData('categories') as $k => $v): ?>
                   <option value="<?php echo $v['name'] ?>"><?php echo $v['name'] ?></option>                  
                   <?php endforeach; ?>                  
                </select>
             </p>
-            <br />Your bet:<br /><input type="text" name="betAmount" id="id_betAmount" />
+            <br />Your bet:<br /><input type="number" step="0.01" min="0" name="betAmount" id="id_betAmount" class="required-entry validate-number"/>
          </fieldset>
          <fieldset>
             <ul>
@@ -33,15 +33,15 @@
       </div>
       <div class="clear "></div>
       <fieldset id="flight">
-         <label class=""> 
-         Event date<br /> 
-         <input maxlength="524288" name="eventtime" type="date"/> 
-         </label><br />
-         <label class=""> 
-         Bet deadline<br />  
-         <input maxlength="524288" name="deadlinetime" type="date"/> 
-         </label>
-      </fieldset>
+        	<label style="float: left; margin-right: 100px;"> 
+        	Event date<br/> 
+        	<input class="date" id="event" name="eventtime"/><a href="#" class="caltrigger"></a> 
+        	</label>
+        	<label> 
+        	Bet deadline<br/>  
+        	<input class="date" id="deadline" maxlength="524288" name="deadlinetime" size="20" tabindex="0" title=""/><a href="#" class="caltrigger"></a> 
+        	</label>
+        </fieldset>
       <div id="contactForm"><input type="submit" value="Submit" name="submit" id="submit"/></div>
    </form>
    <p>Submission fee of 0.1 will apply.<br />
@@ -49,4 +49,28 @@
       All dates correspond to end of day Eastern Time.<br />
       You can give us <a href="mailto:john@reid.cc">feedback</a> if you have any troubles.
    </p>	
-</div>
+   <script type="text/javascript">
+//< ![CDATA[
+  var myForm= new VarienForm('new_article', true);
+//]]>
+</script>
+
+<script>
+    jQuery(function(){
+      jQuery.datepicker.setDefaults(
+        jQuery.extend(jQuery.datepicker.regional[""])
+      );
+      jQuery('#event').datepicker({onSelect: function(dateStr) {
+        var d = jQuery.datepicker.parseDate('mm/dd/yy', dateStr);  
+        var max = jQuery.datepicker.parseDate('mm/dd/yy', dateStr);
+        d.setDate(d.getDate() - 2);
+        jQuery('#deadline').datepicker('setDate', d);
+        jQuery('#deadline').datepicker('option', 'maxDate', max);
+      }});
+      jQuery("#event").datepicker('option', 'minDate', new Date());
+      jQuery("#event").datepicker('option', 'maxDate', "+2y");
+      jQuery("#deadline").datepicker();
+      jQuery("#deadline").datepicker('option', 'minDate', new Date());    
+
+});
+</script>

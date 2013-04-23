@@ -1,0 +1,96 @@
+<?
+/*//////////////////////////////////////////////////////////////////////
+
+Description:       Liberty Reserve Sample Store
+Release Date:     Oct 06, 2011
+
+Designed and Developed by Liberty Reserve development team.
+Copyright (c) 2011 Liberty Reserve.
+Website: http://www.libertyreserve.com
+
+This program is distributed in the hope that it will be useful but 
+WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+
+//////////////////////////////////////////////////////////////////////*/
+
+
+require_once("include/content.php");
+
+
+showHeader("Payment Failed");
+?>
+<h1>Payment Failed</h1>
+
+<p>
+  You have canceled the following purchase:
+</p>
+  
+<table>
+  <tr>
+    <td>
+      Order ID:
+    </td>
+    <td>
+      <?=$_REQUEST["order_id"]?>
+    </td>
+  </tr>  
+  <tr>
+    <td>
+      Name:
+    </td>
+    <td>
+      <?=$_REQUEST["item_name"]?>
+    </td>
+  </tr>  
+  <tr>
+    <td>
+      Price:
+    </td>
+    <td>
+      <?=$_REQUEST["lr_amnt"]?>
+    </td>
+  </tr>  
+</table>
+  
+<p>
+  <a href="index.php">Return to the main page</a>
+</p>  
+  
+<h2>Liberty Reserve fields sent here</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">
+        Name
+      </th>
+      <th style="text-align: left">
+        Value
+      </th>
+      <th>&nbsp;
+        
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    
+<?
+$reqKeys = array_keys ($_REQUEST);
+foreach($reqKeys as &$key) {
+?>
+    <tr>
+      <td><?=$key?></td>
+      <td><?=$_REQUEST[$key]?></td>
+      <td><?=ereg("^lr_[a-z_]*$", $key) ? "<div style=\"background: #cc0000; color: #ffffff; padding: 5px; marging: 2px; text-align: center;\">LR</div>" : "&nbsp;"?></td>
+    </tr>
+<?
+}
+?>
+  </tbody>
+</table>
+
+<?
+
+showFooter();
+?>

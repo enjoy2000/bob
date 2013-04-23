@@ -819,8 +819,6 @@ h6{ font-size: 16px; }
 .highlight-red,
 .highlight-blue,
 .highlight-green {
-	background:yellow;
-	padding:2px 5px;
 }
 
 .highlight-red{ 
@@ -1389,4 +1387,8 @@ body.home .panes{
 
 .panes .plain-text a{
 	text-decoration: none;
+}
+input.hasDatepicker{
+    font-size: 25px;
+    width: 200px;
 }

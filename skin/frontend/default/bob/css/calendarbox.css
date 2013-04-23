@@ -56,7 +56,7 @@
 	width:30px;
 	height:32px;
 	float:left;
-	background:url(/static/icon.jpg) no-repeat 0 0;
+	background:url(../images/icon.jpg) no-repeat 0 0;
 	margin-top:-8px;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;

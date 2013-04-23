@@ -13,7 +13,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
    
     public function indexAction() {
         $this->_initAction();       
-        $this->_addContent($this->getLayout()->createBlock('article/adminhtml_article'));
+        
         $this->renderLayout();
     }
  
@@ -105,5 +105,10 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
         $this->getResponse()->setBody(
                $this->getLayout()->createBlock('article/adminhtml_article_grid')->toHtml()
         );
+    }
+    
+    public function massDeleteAction(){
+    	$articleIds = $this->getRequest()->get('article_id');
+    	var_dump($articleIds);
     }
 }

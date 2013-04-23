@@ -24,41 +24,31 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div class="col2-set">
-    <div class="col-1">
-        <div class="box">
-            <div class="box-title">
-                <h3><?php echo $this->__('Contact Information') ?></h3>
-                <a href="<?php echo $this->getUrl('customer/account/edit') ?>"><?php echo $this->__('Edit') ?></a>
-            </div>
-            <div class="box-content">
-                <p>
-                    <?php echo $this->htmlEscape($this->getCustomer()->getName()) ?><br />
-                    <?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?><br />
-                    <a href="<?php echo $this->getChangePasswordUrl() ?>"><?php echo $this->__('Change Password') ?></a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <?php if( $this->isNewsletterEnabled() ): ?>
-    <div class="col-2">
-        <div class="box">
-            <div class="box-title">
-                <h3><?php echo $this->__('Newsletters') ?></h3>
-                <a href="<?php echo $this->getUrl('newsletter/manage') ?>"><?php echo $this->__('Edit') ?></a>
-            </div>
-            <div class="box-content">
-                <p>
-                    <?php if( $this->getIsSubscribed() ): ?>
-                        <?php echo $this->__("You are currently subscribed to 'General Subscription'.") ?>
-                    <?php else: ?>
-                        <?php echo $this->__('You are currently not subscribed to any newsletter.') ?>
-                    <?php endif; ?>
-                </p>
-            </div>
-        </div>
-        <?php /* Extensions placeholder */ ?>
-        <?php echo $this->getChildHtml('customer.account.dashboard.info.extra')?>
-    </div>
-    <?php endif; ?>
-</div>
+<table>
+      <tbody>
+         <tr>
+            <th>Name:</th>
+            <td><?php echo $this->htmlEscape($this->getCustomer()->getName()) ?><br /> [<a href="<?php echo $this->getChangePasswordUrl() ?>">Change password</a>]</td>
+         </tr>
+         <tr>
+            <th>Email address:</th>
+            <td><?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?></td>
+         </tr>
+         <tr>
+            <th>Deposit address:</th>
+            <td><a href="https://sci.libertyreserve.com/en?lr_acc=U0832731&lr_acc_from=U8414837&lr_amnt=5.00&lr_currency=LRUSD&lr_comments=U8414837+5.00+USD&lr_success_url=http%3a%2f%2fmy.local%2fmagento%2findex.php%2farticle%2findex%2fsuccess&lr_success_url_method=POST" alt="Pay With Liberty Reserve!"> <img src="https://www.libertyreserve.com/downloads/banners/accept.gif" alt="LR" border="0"/></a></td>
+         </tr>
+         <tr>
+            <th>Withdrawal address:</th>
+            <td> [<a href="#">Change</a>]</td>
+         </tr>
+         <tr>
+            <th>Available balance:</th>
+            <td><?php echo $this->htmlEscape($this->getCustomer()->getBalance()); ?> [<a href="#">Withdraw</a>]</td>
+         </tr>
+         <tr>
+            <th>Balance in bets:</th>
+            <td>0</td>
+         </tr>
+      </tbody>
+   </table>

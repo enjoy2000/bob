@@ -44,11 +44,19 @@
             <li  ><a href="<?php echo $this->getBaseUrl() ?>article/index/new">Submit<span class="subheader">Your own</span></a></li>
             <li ><a href="<?php echo $this->getBaseUrl() ?>help">Help<span class="subheader">Learn more</span></a></li>
             <li >
-               <a href="<?php echo $this->getBaseUrl(); ?>customer/account/login">Account<span class="subheader"> Login </span></a>
+            <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()) : ?>
+               <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>">Account<span class="subheader"> Login </span></a>
                <ul>
-                  <li><a href="<?php echo $this->getBaseUrl(); ?>customer/account/login"><span>Login</span></a></li>
-                  <li><a href="<?php echo $this->getCreateAccountUrl() ?>"><span>Register</span></a></li>
+                  <li><a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><span>Login</span></a></li>
+                  <li><a href="<?php echo $this->getUrl('customer/account/create') ?>"><span>Register</span></a></li>
                </ul>
+            <?php else: ?>
+            <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>">Account<span class="subheader"><?php echo Mage::helper('customer')->getCustomerName() ?></span></a>
+               <ul>
+                  <li><a href="<?php echo Mage::helper('customer')->getAccountUrl(); ?>"><span>Profile</span></a></li>
+                  <li><a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><span>Logout</span></a></li>
+               </ul>
+            <?php endif; ?>
             </li>
          </ul>
       </div>

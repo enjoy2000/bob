@@ -6,10 +6,15 @@
             <sort_order>71</sort_order>               
             <children>
                 <items module="article">
-                    <title>Manage Items</title>
+                    <title>Manage Article</title>
                     <sort_order>0</sort_order>
                     <action>article/adminhtml_article</action>
                 </items>
+                <categories module="article">
+                    <title>Manage Categories</title>
+                    <sort_order>1</sort_order>
+                    <action>article/adminhtml_category</action>
+                </categories>
             </children>
         </article>
     </menu>

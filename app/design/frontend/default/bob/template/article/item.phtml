@@ -1,0 +1,40 @@
+<?php if($this->getData('item')): ?>
+     <br />
+   <div class="two-third">
+      <h1 class="line-divider"><?php echo $this->getData('item')->getTitle()    ?></h1>
+      <?php echo $this->getData('item')->getContent()    ?>
+      <br /><br /><br />
+      <h4>Info</h4>
+      <strong>Opening date:</strong> <?php echo Mage::helper('article')->dateFormat($this->getData('item')->getCreatedTime()) ?><br />
+      <strong>Bet deadline:</strong> <?php echo Mage::helper('article')->dateFormat($this->getData('item')->getDeadlineTime()) ?><br />
+      <strong>Event date:</strong> <?php echo Mage::helper('article')->dateFormat($this->getData('item')->getEventTime()) ?><br />
+      <strong>Category:</strong> <?php echo $this->getData('item')->getCategory() ?><br />
+      <strong>Total agree bets:</strong> <?php echo $this->getData('item')->getAgree() ?><br />
+      <strong>Total disagree bets:</strong> <?php echo $this->getData('item')->getDisagree() ?><br />
+      <strong>Total weighted agree bets:</strong> <?php echo $this->getData('item')->getAgreeWeight() ?><br />
+      <strong>Total weighted disagree bets:</strong> <?php echo $this->getData('item')->getDisagreeWeight() ?><br />
+      <br /><br />
+   </div>
+   <div class="one-third last">
+      <br /><br />
+      <p class="download-box">Place your bet here.<br />Current time weight is <?php echo Mage::helper('article')->getTimeWeight($this->getData('item')->getDeadlineTime()) ?>.</p>
+      <div class="filter">
+         <li></li>
+         <li class="agree"><?php echo $this->getData('item')->getAgree() ?></li>
+         <li class="disagree"><?php echo $this->getData('item')->getDisagree() ?></li>
+         <li class="active"><?php echo Mage::helper('article')->timeCountdown($this->getData('item')->getDeadlineTime(), $this->getData('item')->getStatus()) ?></li>
+      </div>
+      <form id="betForm" name="betForm" action="<?php echo $this->getUrl('article/index/bet') ?>" method="post">         
+         <fieldset id="btcForm">
+            Amount:<br /><input type="text" name="amount" id="id_amount" />
+         </fieldset>
+         <ul>
+            <li><label for="id_betSide_0"><input type="radio" id="id_betSide_0" value="1" name="betSide" /> Agree</label></li>
+            <li><label for="id_betSide_1"><input type="radio" id="id_betSide_1" value="0" name="betSide" /> Disagree</label></li>
+         </ul>
+         <input type="hidden" name="itemId" value="665" />
+         <div id="contactForm"><input type="submit" value="Bet" name="Bet" id="submit" /></div>
+      </form>
+   </div>
+   <div class="clear "></div>
+<?php endif; ?>

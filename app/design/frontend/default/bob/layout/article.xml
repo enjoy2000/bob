@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <article_index_index>
         <reference name="content">
-             <block type="core/template" name="article" template="article/article.phtml" />
+             <block type="article/index" name="article" template="article/article.phtml" />
         </reference>
     </article_index_index>
     <article_index_new>
@@ -10,4 +10,9 @@
              <block type="core/template" name="article/new" template="article/new.phtml" />
         </reference>
     </article_index_new>
+    <article_index_item>
+        <reference name="content">
+             <block type="core/template" name="article/item" template="article/item.phtml" />
+        </reference>
+    </article_index_item>
 </layout>

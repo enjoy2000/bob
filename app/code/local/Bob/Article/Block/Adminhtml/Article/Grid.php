@@ -71,11 +71,36 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
             'type'      => 'options',
             'options'   => array(
                 1 => 'Active',
-                0 => 'Inactive',
+                2 => 'Inactive',
             ),
         ));
  
         return parent::_prepareColumns();
+    }
+
+
+    protected function _prepareMassaction()
+    {
+    	$this->setMassactionIdField('article_id');
+    	$this->getMassactionBlock()->setFormFieldName('article_id');
+    
+    	$this->getMassactionBlock()->addItem('delete', array(
+    			'label'    => Mage::helper('article')->__('Delete'),
+    			'url'      => $this->getUrl('*/*/massDelete'),
+    			'confirm'  => Mage::helper('article')->__('Are you sure?')
+    	));
+    
+    	$this->getMassactionBlock()->addItem('active', array(
+    			'label'    => Mage::helper('article')->__('Active'),
+    			'url'      => $this->getUrl('*/*/massActive')
+    	));
+    
+    	$this->getMassactionBlock()->addItem('deactive', array(
+    			'label'    => Mage::helper('article')->__('Deactive'),
+    			'url'      => $this->getUrl('*/*/massDeactive')
+    	));
+    
+    	return $this;
     }
  
     public function getRowUrl($row)
