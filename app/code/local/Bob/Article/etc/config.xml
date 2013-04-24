@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bob_Article>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
         </Bob_Article>
     </modules>
     <frontend>
@@ -101,6 +101,12 @@
                     <category>
                     	<table>article_category</table>
                     </category>
+                    <bet>
+                        <table>article_bet</table>
+                    </bet>
+                    <log>
+                        <table>article_log</table>
+                    </log>
                 </entities>
             </article_mysql4>
         </models>

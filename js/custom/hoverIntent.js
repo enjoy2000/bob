@@ -81,4 +81,4 @@
 		return this.mouseover(handleHover).mouseout(handleHover);
 	};
 	
-})(jQuery);
+})(jQuery);    

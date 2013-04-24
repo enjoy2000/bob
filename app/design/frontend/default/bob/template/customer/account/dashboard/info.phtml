@@ -24,11 +24,21 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php
+    $bet = Mage::getModel('article/bet')->getCollection()
+            ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+            ->addFieldToFilter('status', '1')
+            ->load();
+    $count = 0;
+    foreach($bet as $k){
+        $count = $count + $k->getAgree() + $k->getDisagree();
+    }
+ ?>
 <table>
       <tbody>
          <tr>
             <th>Name:</th>
-            <td><?php echo $this->htmlEscape($this->getCustomer()->getName()) ?><br /> [<a href="<?php echo $this->getChangePasswordUrl() ?>">Change password</a>]</td>
+            <td><?php echo $this->htmlEscape($this->getCustomer()->getName()) ?> [<a href="<?php echo $this->getChangePasswordUrl() ?>">Change password</a>]</td>
          </tr>
          <tr>
             <th>Email address:</th>
@@ -44,11 +54,11 @@
          </tr>
          <tr>
             <th>Available balance:</th>
-            <td><?php echo $this->htmlEscape($this->getCustomer()->getBalance()); ?> [<a href="#">Withdraw</a>]</td>
+            <td><?php echo round($this->htmlEscape($this->getCustomer()->getBalance()), 2); ?> [<a href="#">Withdraw</a>]</td>
          </tr>
          <tr>
             <th>Balance in bets:</th>
-            <td>0</td>
+            <td><?php echo $count; ?></td>
          </tr>
       </tbody>
    </table>

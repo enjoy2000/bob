@@ -52,13 +52,22 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
             'index'     => 'created_time',
         ));
  
-        $this->addColumn('update_time', array(
-            'header'    => Mage::helper('article')->__('Update Time'),
+        $this->addColumn('deadline_time', array(
+            'header'    => Mage::helper('article')->__('Deadline Time'),
             'align'     => 'left',
             'width'     => '120px',
             'type'      => 'date',
             'default'   => '--',
-            'index'     => 'update_time',
+            'index'     => 'deadline_time',
+        ));
+        
+        $this->addColumn('event_time', array(
+            'header'    => Mage::helper('article')->__('Event Time'),
+            'align'     => 'left',
+            'width'     => '120px',
+            'type'      => 'date',
+            'default'   => '--',
+            'index'     => 'event_time',
         ));   
  
  
@@ -70,8 +79,11 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
             'index'     => 'status',
             'type'      => 'options',
             'options'   => array(
-                1 => 'Active',
-                2 => 'Inactive',
+                'awaiting'   => 'awaiting',
+                'available'  => 'available',
+                'waiting'    => 'waiting',
+                'closed'     => 'closed',                
+                'rejected'   => 'rejected',
             ),
         ));
  

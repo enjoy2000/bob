@@ -25,11 +25,26 @@
  */
 ?>
 <?php 
-    $articles = Mage::getModel('article/article')->getCollection();
-    $articles->setPageSize(5);
-    $articles->setCurPage(1);
-    $articles->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getEmail());
-    $awaiting = $articles->addFieldToFilter('status', 'awaiting')->load();
+    $awaiting = Mage::getModel('article/article')->getCollection()
+                    ->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', 'awaiting')
+                    ->load();
+    $available = Mage::getModel('article/article')->getCollection()
+                    ->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', 'available')
+                    ->load();
+    $waiting = Mage::getModel('article/article')->getCollection()
+                    ->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', 'waiting')
+                    ->load();
+    $closed = Mage::getModel('article/article')->getCollection()
+                    ->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', 'closed')
+                    ->load();
+    $rejected = Mage::getModel('article/article')->getCollection()
+                    ->addFieldToFilter('user_post',Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', 'rejected')
+                    ->load();    
 ?>
 
 <div id="page-content">
@@ -41,41 +56,81 @@
    <h6 class="toggle-trigger"><a href="#">Your statements awaiting approval (<?php echo count($awaiting) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+        <?php if(count($awaiting) < 1): ?>
          <p>
             You don't have any statement awaiting approval.
          </p>
+        <?php else : ?> 
+            <?php foreach($awaiting as $article): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
-   <h6 class="toggle-trigger"><a href="#">Your statements available for betting (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your statements available for betting (<?php echo count($available) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($available) < 1): ?>
          <p>
-            You don't have any statement available for betting.
+            You don't have any available statement.
          </p>
+        <?php else : ?> 
+            <?php foreach($available as $article): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
-   <h6 class="toggle-trigger"><a href="#">Your waiting statements (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your waiting statements (<?php echo count($waiting) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($waiting) < 1): ?>
          <p>
             You don't have any waiting statement.
          </p>
+        <?php else : ?> 
+            <?php foreach($waiting as $article): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
-   <h6 class="toggle-trigger"><a href="#">Your closed statements (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your closed statements (<?php echo count($closed) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($closed) < 1): ?>
          <p>
             You don't have any closed statement.
          </p>
+        <?php else : ?> 
+            <?php foreach($closed as $article): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
-   <h6 class="toggle-trigger"><a href="#">Your rejected statements (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your rejected statements (<?php echo count($rejected) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($rejected) < 1): ?>
          <p>
             You don't have any rejected statement.
          </p>
+        <?php else : ?> 
+            <?php foreach($rejected as $article): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
    <br />

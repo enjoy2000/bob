@@ -5,6 +5,7 @@
     $articles = Mage::getModel('article/article')->getCollection();
     $time = time();
     foreach($articles as $article){
+        $article->setTotalBets($article->getAgree() + $article->getDisagree())->save();
         $deadline = strtotime($article->getDeadlineTime());
         $diff = $time - $deadline;
         if($diff > 0){

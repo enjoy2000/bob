@@ -7,7 +7,7 @@
     </article_index_index>
     <article_index_new>
         <reference name="content">
-             <block type="core/template" name="article/new" template="article/new.phtml" />
+             <block type="article/new" name="article/new" template="article/new.phtml" />
         </reference>
     </article_index_new>
     <article_index_item>
@@ -15,4 +15,9 @@
              <block type="core/template" name="article/item" template="article/item.phtml" />
         </reference>
     </article_index_item>
+    <article_index_success>
+        <reference name="content">
+             <block type="core/template" name="article/success" template="article/success.phtml" />
+        </reference>
+    </article_index_success>
 </layout>

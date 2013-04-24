@@ -14,20 +14,48 @@ class Bob_Article_Block_Adminhtml_Article_Edit_Tab_Form extends Mage_Adminhtml_B
             'required'  => true,
             'name'      => 'title',
         ));
+        
+        $fieldset->addField('decision', 'select', array(
+            'label'     => Mage::helper('article')->__('Decision'),
+            'name'      => 'decision',
+            'values'    => array(
+                array(
+                    'value'     => 1,
+                    'label'     => Mage::helper('article')->__('True'),
+                ),
+ 
+                array(
+                    'value'     => 0,
+                    'label'     => Mage::helper('article')->__('False'),
+                ),
+                )
+        ));
  
         $fieldset->addField('status', 'select', array(
             'label'     => Mage::helper('article')->__('Status'),
             'name'      => 'status',
             'values'    => array(
                 array(
-                    'value'     => 1,
-                    'label'     => Mage::helper('article')->__('Active'),
+                    'value'     => 'awaiting',
+                    'label'     => Mage::helper('article')->__('Awaiting'),
                 ),
  
                 array(
-                    'value'     => 0,
-                    'label'     => Mage::helper('article')->__('Inactive'),
+                    'value'     => 'available',
+                    'label'     => Mage::helper('article')->__('Available'),
                 ),
+                array(
+                    'value'     => 'waiting',
+                    'label'     => Mage::helper('article')->__('Waiting'),
+                ),
+                array(
+                    'value'     => 'closed',
+                    'label'     => Mage::helper('article')->__('Closed'),
+                ),
+                array(
+                    'value'     => 'rejected',
+                    'label'     => Mage::helper('article')->__('Rejected'),
+                )
             ),
         ));
        

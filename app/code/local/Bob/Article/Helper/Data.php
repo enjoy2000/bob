@@ -127,7 +127,7 @@ class Bob_Article_Helper_Data extends Mage_Core_Helper_Abstract
     public function getTimeWeight($date){
         $diff = strtotime($date) - time();
         if($diff > 1){
-            return (int)($diff/60);
+            return round($diff/60/60, 3);
         } else{
             return 0;
         }

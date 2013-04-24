@@ -5,9 +5,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
 	public function indexAction()
 	{        
 		$this->loadLayout();
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
-        $categories = $connection->fetchAll('SELECT `name` FROM `article_category`');
-        $this->getLayout()->getBlock('article')->setData('categories', $categories);
+        //Mage::getSingleton('customer/session')->getCustomer()->setBalance(89548)->save();
         $request = $this->getRequest();        
         
         $articles = Mage::getModel('article/article')->getCollection();  
@@ -54,11 +52,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     
     public function newAction()
     {
-        $this->loadLayout();
-        
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
-        $categories = $connection->fetchAll('SELECT `name` FROM `article_category`');
-        $this->getLayout()->getBlock('article/new')->setData('categories', $categories);
+        $this->loadLayout();        
         $this->renderLayout();        
         
         $time = date("Y-m-d H:i:s");
@@ -73,22 +67,32 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             //echo $customer->getBalance();die;
             if($customer->getBalance() > (0.10 + $this->getRequest()->getPost('betAmount')) ){
-                try{                    
+                try{
+                    $bet = Mage::getModel('article/bet');
+                    $log = Mage::getModel('article/log');
                     $form = $this->getRequest()->getPost();
-                    //echo $customer->getBalance() - 0.10 - $form['betAmount'];die;
+                    //echo $customer->getBalance() - 0.10 - $form['betAmount'];die;                    
                     $article = Mage::getModel('article/article');
                     $timeweight = Mage::helper('article')->getTimeWeight($form['deadlinetime']);
+                    
                     if($form['betSide'] == 1){
                         $article->setAgree($form['betAmount']);
                         $article->setAgreeWeight($timeweight*$form['betAmount']);
+                        $betAmount = $form['betAmount'];
+                        $bet->setAgree($form['betAmount']);
+                        $bet->setAgreeWeight($timeweight*$form['betAmount']);
                     }
                     elseif($form['betSide'] == 2){
                         $article->setDisagree($form['betAmount']);
                         $article->setDisagreeWeight($timeweight*$form['betAmount']);
+                        $betAmount = $form['betAmount'];
+                        $bet->setDisagree($form['betAmount']);
+                        $bet->setDisagreeWeight($timeweight*$form['betAmount']);
                     }
                     else{
-                        return;
+                        Mage::throwException('You have to choose side to bet.');
                     }
+                    
                     $article->setTitle($form['title'])
                             ->setContent($form['content'])
                             ->setDeadlineTime($form['deadlinetime'])
@@ -97,31 +101,48 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                             ->setCategory($form['category'])
                             ->setTotalBets($form['betAmount'])
                             ->setStatus('available')
-                            ->setUserPost($customer->getEmail())
+                            ->setUserPost($customer->getId())
                             ->save();
-                    $customer->setBalance(17)->save();
-                    //write log
+                            
+                    $customer->setBalance($customer->getBalance() - 0.10 - $betAmount)->save();                    //write log
+                    
+                    $bet->setCustomerId($customer->getId())
+                        ->setBetDate(date("Y-m-d H:i:s"));
+                    if($article->isObjectNew()){
+                        $bet->setArticleId($article->getArticleId())->save();
+                        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id=') . $article->getArticleId() . '>Bet</a>';
+                    }
+                    
+                    $log->setCustomerId($customer->getId())
+                        ->setAmount(-1*$this->getRequest()->getPost('betAmount'))
+                        ->setCreatedDate(date("Y-m-d H:i:s"))
+                        ->setLog($log_txt)
+                        ->save();
                     $this->_redirect('*/*/');
+                    
                 } catch (Exception $e){
                     Mage::getSingleton('article/article')->addError($e->getMessage());
                     $this->_redirect('*/*/new');
                 }
             }
             else{
-                die('Not enough balance.');
+                echo Mage::helper('article')->__('Not enough balance.');
+                $this->_redirect('*/*/new');
             }            
         }
     }
     
     public function itemAction()
     {
-               
+        $this->loadLayout();       
         if(!$this->getRequest()->getParam('id')){
             $this->_redirect('*/*/');
         }
-        $this->loadLayout();
-        if(($this->getRequest()->getParam('id') > 1) && ($this->getRequest()->getParam('id') < count(Mage::getModel('article/article')->getCollection()))){
-            $item = Mage::getModel('article/article')->load($this->getRequest()->getParam('id'));
+        $item = Mage::getModel('article/article')->load($this->getRequest()->getParam('id')); 
+                 
+		$id = $this->getRequest()->getParam('id'); 
+        if(($this->getRequest()->getParam('id') >= 1) && ($this->getRequest()->getParam('id') <= count(Mage::getModel('article/article')->getCollection()))){
+            
             if(is_object($item)){
                 $this->getLayout()->getBlock('article/item')->setData('item', $item);
             } else{
@@ -129,14 +150,85 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             }
         } else{
             $this->_redirect('*/*/');
-        }             
-        $this->renderLayout();
+        }
+        $this->renderLayout();                 
         
     }
     
     public function betAction()
     {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $bet = Mage::getModel('article/bet');
+        $log = Mage::getModel('article/log');
+        $article = Mage::getModel('article/article');
         
+        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id=') . $this->getRequest()->getPost('itemId') . '>Bet</a>';
+        
+        if($this->getRequest()->getPost()){
+            $item = Mage::getModel('article/article')->load($this->getRequest()->getPost('itemId'));
+            $bet->setCustomerId($customer->getId())
+                ->setArticleId($this->getRequest()->getPost('itemId'))
+                ->setBetDate(date("Y-m-d H:i:s"));
+            
+            if($customer->getBalance() > $this->getRequest()->getPost('amount')){
+                if($this->getRequest()->getPost('betSide') == 1){
+                    if($this->getRequest()->getPost('amount') % 0.010 != 0){                    
+                        Mage::throwException('Your bet must be a multiple of 0.010.');
+                    }
+                    else{
+                        $bet->setAgree($this->getRequest()->getPost('amount'))
+                            ->setAgreeWeight(Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
+                            ->save();
+                        
+                        $customer->setBalance($customer->getBalance() - $this->getRequest()->getPost('amount'))->save();
+                        
+                        $log->setCustomerId($customer->getId())
+                            ->setAmount(-1*$this->getRequest()->getPost('amount'))
+                            ->setCreatedDate(date("Y-m-d H:i:s"))
+                            ->setLog($log_txt)
+                            ->save();
+                        
+                        $article->setAgree($article->getAgree() + $this->getRequest()->getPost('amount'))
+                                ->setAgreeWeight($article->getAgreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
+                                ->save();
+                        
+                        $this->_redirect('*/*/success');
+                    }
+                }
+                elseif($this->getRequest()->getPost('betSide') == 2){
+                    if($this->getRequest()->getPost('amount') % 0.010 != 0){                    
+                        Mage::throwException('Your bet must be a multiple of 0.010.');
+                    }
+                    else{
+                        $bet->setDisagree($this->getRequest()->getPost('amount'))
+                            ->setDisagreeWeight(Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
+                            ->save();
+                        
+                        $customer->setBalance($customer->getBalance() - $this->getRequest()->getPost('amount'))->save();
+                        
+                        $log->setCustomerId($customer->getId())
+                            ->setAmount(-1*$this->getRequest()->getPost('amount'))
+                            ->setCreatedDate(date("Y-m-d H:i:s"))
+                            ->setLog($log_txt)
+                            ->save();
+                        
+                        $article->setDisagree($article->getDisagree() + $this->getRequest()->getPost('amount'))
+                                ->setDisagreeWeight($article->getDisagreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
+                                ->save();
+                        
+                        $this->_redirect('*/*/success');
+                    }
+                }
+                else{
+                    Mage::getSingleton('adinhtml/session')->addError(Mage::helper('article')->__('You have to choose bet side.'));
+                    Mage::throwException('You have to choose bet side.');
+                }
+            }
+            else{
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('article')->__('Not enough balance.'));
+                throw new Exception('Not enough balance2');
+            }
+        }
     }
     
     public function statusAction()
@@ -189,30 +281,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         }
     }
     
-    public function testAction(){
-    	$customer = Mage::getSingleton('customer/session')->getCustomer();
-    	$customer->setBalance(11.11)->save();
-    	var_dump($customer);
-    }
-
-    public function test2Action()
-    {
-        if($this->getRequest()->getParam('id') > 0){
-            try{
-                $model = Mage::getModel('article/article');
-                $model->setId($this->getRequest()->getParam('id'))->delete();
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
-                $this->_redirect('*/*/');
-            } catch(Exception $e){
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                $this->_redirect('*/*/edit', 'id' => $this->getRequest()->getParam('id'));
-            }
-        }
-        $this->_redirect('*/*/');
-    }
-
-    public function test3Action()
-    {
-
+    public function successAction(){
+    	$this->loadLayout();
+        $this->renderLayout();       
     }
 }

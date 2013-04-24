@@ -53,6 +53,16 @@
 //< ![CDATA[
   var myForm= new VarienForm('new_article', true);
 //]]>
+jQuery('#new_article').submit(function() {
+    if(jQuery('#id_betAmount').val() > <?php echo Mage::getSingleton('customer/session')->getCustomer()->getBalance() ?>){
+        jQuery('#id_betAmount').after('<ul class="errorlist"><li>Your balance is not enough.</li></ul>');
+        return false;
+    }
+    if(jQuery('input[name=betSide]:checked', '#new_article').val() != 1 || jQuery('input[name=betSide]:checked', '#new_article').val() != 2){
+        jQuery('#id_amount').after('<ul class="errorlist"><li>You have to choose side to bet.</li></ul>');
+        return false;
+    }
+});
 </script>
 
 <script>
@@ -64,6 +74,7 @@
         var d = jQuery.datepicker.parseDate('mm/dd/yy', dateStr);  
         var max = jQuery.datepicker.parseDate('mm/dd/yy', dateStr);
         d.setDate(d.getDate() - 2);
+        max.setDate(d.getDate() + 1);
         jQuery('#deadline').datepicker('setDate', d);
         jQuery('#deadline').datepicker('option', 'maxDate', max);
       }});
