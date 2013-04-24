@@ -25,12 +25,12 @@
  */
 ?>
 <?php
-    $bet = Mage::getModel('article/bet')->getCollection()
+    $bets = Mage::getModel('article/bet')->getCollection()
             ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
             ->addFieldToFilter('status', '1')
             ->load();
     $count = 0;
-    foreach($bet as $k){
+    foreach($bets as $k){
         $count = $count + $k->getAgree() + $k->getDisagree();
     }
  ?>
@@ -42,19 +42,19 @@
          </tr>
          <tr>
             <th>Email address:</th>
-            <td><?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?></td>
+            <td><?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?> [<a href="<?php echo $this->getUrl('customer/account/edit') ?>">Change Email</a>]</td>
          </tr>
          <tr>
             <th>Deposit address:</th>
             <td><a href="https://sci.libertyreserve.com/en?lr_acc=U0832731&lr_acc_from=U8414837&lr_amnt=5.00&lr_currency=LRUSD&lr_comments=U8414837+5.00+USD&lr_success_url=http%3a%2f%2fmy.local%2fmagento%2findex.php%2farticle%2findex%2fsuccess&lr_success_url_method=POST" alt="Pay With Liberty Reserve!"> <img src="https://www.libertyreserve.com/downloads/banners/accept.gif" alt="LR" border="0"/></a></td>
          </tr>
          <tr>
-            <th>Withdrawal address:</th>
+            <th>Liberty Reserve Account:</th>
             <td> [<a href="#">Change</a>]</td>
          </tr>
          <tr>
             <th>Available balance:</th>
-            <td><?php echo round($this->htmlEscape($this->getCustomer()->getBalance()), 2); ?> [<a href="#">Withdraw</a>]</td>
+            <td><?php echo round($this->htmlEscape($this->getCustomer()->getBalance()), 2); ?> [<a href="<?php echo $this->getUrl('customer/account/withdraw') ?>">Withdraw</a>]</td>
          </tr>
          <tr>
             <th>Balance in bets:</th>

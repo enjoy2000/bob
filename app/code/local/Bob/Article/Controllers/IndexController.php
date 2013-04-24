@@ -111,6 +111,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                     if($article->isObjectNew()){
                         $bet->setArticleId($article->getArticleId())->save();
                         $log_txt = '<a href="'. Mage::getUrl('article/index/item?id=') . $article->getArticleId() . '>Bet</a>';
+                        $log_txt2 ='<a href="'. Mage::getUrl('article/index/item?id=') . $article->getArticleId() . '>Submission Fee</a>';
                     }
                     
                     $log->setCustomerId($customer->getId())
@@ -118,6 +119,11 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         ->setCreatedDate(date("Y-m-d H:i:s"))
                         ->setLog($log_txt)
                         ->save();
+                    $log->setCustomerId($customer->getId())
+                    ->setAmount(-0.010)
+                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                    ->setLog($log_txt2)
+                    ->save();
                     $this->_redirect('*/*/');
                     
                 } catch (Exception $e){
@@ -261,7 +267,13 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             $customer->setBalance($customer->getBalance + $_REQUEST('lr_amnt'));
-        
+            $log = Mage::getModel('article/log');
+            $log->setCustomerId($customer->getId())
+                ->setAmount($_REQUEST('lr_amnt'))
+                ->setCreatedDate(date("Y-m-d H:i:s"))
+                ->setLog('Deposit from LibertyReserve')
+                ->save();
+            
           $msgBody = "Payment was verified and is successful.\n\n";
         }
         else {
@@ -284,5 +296,10 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     public function successAction(){
     	$this->loadLayout();
         $this->renderLayout();       
+    }
+    
+    public function searchAction(){
+        $this->loadLayout();
+        $this->renderLayout();
     }
 }

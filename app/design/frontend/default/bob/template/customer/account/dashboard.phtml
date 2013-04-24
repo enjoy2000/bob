@@ -134,13 +134,27 @@
       </div>
    </div>
    <br />
+   <?php 
+   $openBet = Mage::getModel('article/bet')->getCollection()
+                    ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', '1')
+                    ->load();
+    ?>
    <h4 class="line-divider">Your bets</h4>
-   <h6 class="toggle-trigger"><a href="#">Your open bets (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your open bets (<?php echo count($openBet) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+      <?php if(count($openBet) < 1): ?>
          <p>
             You don't have any open bet.
          </p>
+        <?php else : ?> 
+            <?php foreach($openBet as $bet): ?>       
+             <p>
+                <a href="<?php echo $this->getUrl('article/index/item?id=' . $bet->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
    <h6 class="toggle-trigger"><a href="#">Your closed bets (0)</a></h6>

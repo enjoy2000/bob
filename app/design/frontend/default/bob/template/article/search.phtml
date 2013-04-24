@@ -1,0 +1,46 @@
+<?php $i = 0; ?>
+
+	<br />
+<?php 
+$s = $this->getRequest()->getQuery('s');
+$q = $this->getRequest()->getQuery('q');        
+ ?>	
+<ul class="filter">
+	<li>Status:</li>
+	<li<?php if(!$s || ($s == 'available')){echo ' class="active"';} ?>><a href="?s=available&q=<?php echo $q ?>">Available</a></li>
+	
+	<li<?php if($s == 'waiting'){echo ' class="active"';} ?>><a href="?s=waiting&q=<?php echo $q ?>">Waiting</a></li>
+	
+	<li<?php if($s == 'closed'){echo ' class="active"';} ?>><a href="?s=closed&q=<?php echo $q ?>">Closed</a></li>
+	
+</ul>
+
+<form method="get" action="<?php echo $this->getUrl('article/index/search') ?>">
+	<fieldset id="contactForm">
+    <input type="text" name="q" value="<?php echo $q ?>" id="id_q"/><br />
+	<input type="submit" value="Search" id="submit"/>
+	</fieldset>
+</form>
+
+<div class="two-third">
+		<?php foreach($this->getPosts() as $article): ?>
+    <?php
+    if(strpos($article->getTitle(),$q) !== false):
+        $i++;
+    ?>
+		<div class="filter">
+			<a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><h6><?php echo $article->getTitle() ?></h6></a>
+			<li class="agree"><?php echo $article->getAgree() ?></li>
+			<li class="disagree"><?php echo $article->getDisagree() ?></li>
+			<li class="active"><?php echo Mage::helper('article')->timeCountdown($article->getDeadlineTime(), $article->getStatus())   ?></li>
+		</div>
+		<div class="line-divider"></div>
+    <?php endif; ?>
+<?php endforeach ?>	
+	<br /><?php if($i < 2){ echo $i . ' statement';}
+    else{ echo $i . ' statements';} ?> found.
+<div>
+
+
+</div>
+</div>

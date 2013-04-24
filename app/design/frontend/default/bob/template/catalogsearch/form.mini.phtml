@@ -25,9 +25,8 @@
  */
 /* @var $this Mage_Core_Block_Template */
 /* @var $catalogSearchHelper Mage_Catalogsearch_Helper_Data */
-$catalogSearchHelper =  $this->helper('catalogsearch');
 ?>
-    <form method="get" id="searchform" action="<?php echo $catalogSearchHelper->getResultUrl() ?>">
+    <form method="get" id="searchform" action="<?php echo $this->getUrl('article/index/search') ?>">
         <div>
         	<input type="text" value="Search..." name="q" id="s" onfocus="defaultInput(this)" onblur="clearInput(this)"/>
         	<input type="submit" id="searchsubmit" value=" "/>

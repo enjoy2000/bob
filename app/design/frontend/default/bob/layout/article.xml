@@ -20,4 +20,9 @@
              <block type="core/template" name="article/success" template="article/success.phtml" />
         </reference>
     </article_index_success>
+    <article_index_search>
+        <reference name="content">
+             <block type="article/search" name="article/search" template="article/search.phtml" />
+        </reference>
+    </article_index_search>
 </layout>
