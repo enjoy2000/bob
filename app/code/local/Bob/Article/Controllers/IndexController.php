@@ -265,7 +265,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
           $conf_merchantSecurityWord;
           
         //Calculating hash
-        $hash = strtoupper(bin2hex(mhash(MHASH_SHA256, $str)));  
+        $hash = strtoupper(bin2hex(mhash(MHASH_SHA256, $str)));var_dump($hash);die;  
         
         //Let's check that all parameters exist and match and that the hash 
         //string we computed matches the hash string that was sent by LR system.
@@ -286,23 +286,6 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 ->save();
             Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Payment was verified and is successful.'));
             $this->_reidrect('customer/account/');
-            
-          $msgBody = "Payment was verified and is successful.\n\n";
-        }
-        else {
-        
-        // This block is for the code in case that the payment verification has 
-        // failed.
-        // In our example write the response to the body of the email we are 
-        // going to send.
-          $msgBody = "Invalid response. Sent hash didn't match the computed hash.\n";
-        }
-        
-        // Let's get all the data sent by LR and add it to our email.
-        $msgBody .= "Received data\n";
-        $reqKeys = array_keys ($_REQUEST);
-        foreach($reqKeys as &$key) {
-          $msgBody .= $key." = ".$_REQUEST[$key]."\n";
         }
     }
     
