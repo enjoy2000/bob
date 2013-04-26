@@ -185,6 +185,9 @@
    <?php 
         $logs = Mage::getModel('article/log')->getCollection()
                     ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->setOrder('created_date', 'DESC')
+                    ->setPageSize(15)
+                    ->setCurPage(1)
                     ->load();
    ?>
    <h4 class="line-divider">Your transactions</h4>

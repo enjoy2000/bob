@@ -34,10 +34,26 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
             'align'     =>'left',
             'index'     => 'title',
         ));
+        
+        $this->addColumn('category', array(
+            'header'    => Mage::helper('article')->__('Category'),
+            'width'     => '120px',
+            'index'     => 'category',
+            'type'      => 'options',
+            'options'   => array(
+                'Science'   	=> 'Science',
+                'Technology'   	=> 'Technology',
+        		'Politics'   	=> 'Politics',
+        		'Economics'   	=> 'Economics',
+        		'Entertainment' => 'Entertainment',
+        		'Sports'   		=> 'Sports',
+        		'Other'   		=> 'Other',
+            )
+        ));
                 
         $this->addColumn('decision', array(
             'header'    => Mage::helper('article')->__('decision'),
-            'width'     => '120px',
+            'width'     => '50px',
             'index'     => 'decision',
             'type'      => 'options',
             'options'   => array(
@@ -49,7 +65,7 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('created_time', array(
             'header'    => Mage::helper('article')->__('Creation Time'),
             'align'     => 'left',
-            'width'     => '120px',
+            'width'     => '80px',
             'type'      => 'date',
             'default'   => '--',
             'index'     => 'created_time',
@@ -58,7 +74,7 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('deadline_time', array(
             'header'    => Mage::helper('article')->__('Deadline Time'),
             'align'     => 'left',
-            'width'     => '120px',
+            'width'     => '80px',
             'type'      => 'date',
             'default'   => '--',
             'index'     => 'deadline_time',
@@ -67,7 +83,7 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('event_time', array(
             'header'    => Mage::helper('article')->__('Event Time'),
             'align'     => 'left',
-            'width'     => '120px',
+            'width'     => '80px',
             'type'      => 'date',
             'default'   => '--',
             'index'     => 'event_time',

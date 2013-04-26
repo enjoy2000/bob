@@ -55,7 +55,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         $this->loadLayout();        
         $this->renderLayout();        
         
-        $time = date("Y-m-d H:i:s");
+        $time = date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time()));
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $session = Mage::getSingleton('customer/session');
             $session->setAfterAuthUrl( Mage::helper('core/url')->getCurrentUrl() );
@@ -118,7 +118,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                     $customer->setBalance($customer->getBalance() - 0.10 - $form['betAmount'])->save();                    //write log
                     
                     $bet->setCustomerId($customer->getId())
-                        ->setBetDate(date("Y-m-d H:i:s"));
+                        ->setBetDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())));
                     if($article->isObjectNew()){
                         $bet->setArticleId($article->getArticleId())->save();
                         $log_txt = '<a href="'. Mage::getUrl('article/index/item?id='. $article->getArticleId())  . '">Bet</a>';
@@ -127,13 +127,13 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                     $log = Mage::getModel('article/log');
                     $log->setCustomerId($customer->getId())
                         ->setAmount(-1*$this->getRequest()->getPost('betAmount'))
-                        ->setCreatedDate(date("Y-m-d H:i:s"))
+                        ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                         ->setLog($log_txt)
                         ->save();
                     $log = Mage::getModel('article/log');
                     $log->setCustomerId($customer->getId())
                     ->setAmount(-0.010)
-                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                    ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                     ->setLog($log_txt2)
                     ->save();
                     $this->_redirect('*/*/');
@@ -182,7 +182,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             $item = Mage::getModel('article/article')->load($this->getRequest()->getPost('itemId'));
             $bet->setCustomerId($customer->getId())
                 ->setArticleId($this->getRequest()->getPost('itemId'))
-                ->setBetDate(date("Y-m-d H:i:s"));
+                ->setBetDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())));
             
             if($customer->getBalance() >= $this->getRequest()->getPost('amount')){
                 if($this->getRequest()->getPost('betSide') == 1){
@@ -198,7 +198,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         
                         $log->setCustomerId($customer->getId())
                             ->setAmount(-1*$this->getRequest()->getPost('amount'))
-                            ->setCreatedDate(date("Y-m-d H:i:s"))
+                            ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                             ->setLog($log_txt)
                             ->save();
                         
@@ -223,7 +223,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         
                         $log->setCustomerId($customer->getId())
                             ->setAmount(-1*$this->getRequest()->getPost('amount'))
-                            ->setCreatedDate(date("Y-m-d H:i:s"))
+                            ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                             ->setLog($log_txt)
                             ->save();
                         
@@ -277,11 +277,11 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             $_REQUEST["lr_encrypted"] == $hash) {
         
             $customer = Mage::getSingleton('customer/session')->getCustomer();
-            $customer->setBalance($customer->getBalance + $_REQUEST('lr_amnt'));
+            $customer->setBalance($customer->getBalance() + $_REQUEST('lr_amnt'));
             $log = Mage::getModel('article/log');
             $log->setCustomerId($customer->getId())
                 ->setAmount($_REQUEST('lr_amnt'))
-                ->setCreatedDate(date("Y-m-d H:i:s"))
+                ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                 ->setLog('Deposit from LibertyReserve')
                 ->save();
             Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Payment was verified and is successful.'));
@@ -398,7 +398,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         ->save();
                         $log = Mage::getModel('article/log');
                         $log->setCustomerId($customer->getId())
-                            ->setCreatedDate(Date('Y-m-d H:i:s'))
+                            ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                             ->setAmount(-1*$this->getRequest()->getPost('lrAmount'))
                             ->setLog('Withdraw')
                             ->save(); 
