@@ -53,29 +53,35 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
     {
         if ( $this->getRequest()->getPost() ) {
             try {
-                $bets = Mage::getModel('article/bet')->getCollection()
-                        ->addFieldToFilter('article_id', $this->getRequest()->getPost('article_id'))
-                        ->addFieldToFilter('status', '1')
-                        ->addFieldToFilter('disagree', array(
-                                'gt' => '0'
-                        ))
-                        ->load();
+                $allbets = Mage::getModel('article/bet')->getCollection()
+                                    ->addFieldToFilter('article_id', $this->getRequest()->getParam('id'))
+                                    ->addFieldToFilter('status', '1')
+                                    ->load();
                 if(($this->getRequest()->getPost('decision') == 0) || ($this->getRequest()->getPost('decision') == 1)){
                     if($this->getRequest()->getPost('status') != "closed"){
                         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('article')->__('You must set status to "closed" if you choose True or False.'));
                         $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
                     }
                     else{
-                        if(count($bets) <= 0){
+                        if($allbets->count() <= 0){
                             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was closed. No active bet.'));
                             $this->_redirect('*/*/');
                         }
                         else{
-                            $article = Mage::getModel('article/article')->load($this->getRequest()->getPost('article_id'));
+                            $article = Mage::getModel('article/article')->load($this->getRequest()->getParam('id'));
                             if($this->getRequest()->getPost('decision') == 0){
+                                $bets = Mage::getModel('article/bet')->getCollection()
+                                    ->addFieldToFilter('article_id', $this->getRequest()->getParam('id'))
+                                    ->addFieldToFilter('status', '1')
+                                    ->addFieldToFilter('disagree', array(
+                                            'gt' => '0'
+                                    ))
+                                    ->load();
                                 $amount = 0;
                                 $submitter = Mage::getModel('customer/customer')->load($article->getUserPost());
-                                $submitter->setBalance($submitter->getBalance() + $article->getAgree()*0.05)->save();
+                                $submitter->setBalance($submitter->getBalance() + $article->getAgree()*0.05)
+                                          ->save();
+                                
                                 $log = Mage::getModel('article/log');
                                 $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
                                 $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
@@ -84,6 +90,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                     ->setAmount($article->getAgree()*0.05)
                                     ->setLog($log_txt)
                                     ->save();
+                                    
                                 foreach($bets as $bet){
                                     $percentBet = $bet->getDisagree()/$article->getDisagree();
                                     $percentWeight = $bet->getDisagreeWeight()/$article->getDisagreeWeight();
@@ -93,8 +100,9 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                     $bet->setStatus('0')->save();
                                     $amount = $amount + ($percentBet + $percentWeight)*$article->getAgree()*0.45;
                                 }
-                                $log = Mage::getModel('article/log'); 
-                                $log->setCustomerId($customer->getId())
+                                
+                                $log2 = Mage::getModel('article/log'); 
+                                $log2->setCustomerId($customer->getId())
                                     ->setCreatedDate(date("Y-m-d H:i:s"))
                                     ->setAmount($amount)
                                     ->setLog($log_txt2)
@@ -104,9 +112,17 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                 $this->_redirect('*/*/');
                             }
                             else{
+                                $bets = Mage::getModel('article/bet')->getCollection()
+                                    ->addFieldToFilter('article_id', $this->getRequest()->getParam('id'))
+                                    ->addFieldToFilter('status', '1')
+                                    ->addFieldToFilter('agree', array(
+                                            'gt' => '0'
+                                    ))
+                                    ->load();
                                 $amount = 0;
                                 $submitter = Mage::getModel('customer/customer')->load($article->getUserPost());
                                 $submitter->setBalance($submitter->getBalance() + $article->getDisagree()*0.05)->save();
+                                
                                 $log = Mage::getModel('article/log');
                                 $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
                                 $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
@@ -115,6 +131,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                     ->setAmount($article->getDisagree()*0.05)
                                     ->setLog($log_txt)
                                     ->save();
+                                    
                                 foreach($bets as $bet){
                                     $percentBet = $bet->getAgree()/$article->getAgree();
                                     $percentWeight = $bet->getAgreeWeight()/$article->getAgreeWeight();
@@ -124,8 +141,9 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                     $bet->setStatus('0')->save();
                                     $amount = $amount + ($percentBet + $percentWeight)*$article->getDisagree()*0.45;
                                 }
-                                $log = Mage::getModel('article/log'); 
-                                $log->setCustomerId($customer->getId())
+                                
+                                $log2 = Mage::getModel('article/log'); 
+                                $log2->setCustomerId($customer->getId())
                                     ->setCreatedDate(date("Y-m-d H:i:s"))
                                     ->setAmount($amount)
                                     ->setLog($log_txt2)
