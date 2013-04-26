@@ -42,7 +42,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 $articles->load();
             }            
         }else{
-            $articles->addFieldToFilter('status', 'available');
+            $articles->addFieldToFilter('status', 'available')->load();
         }
         Mage::register('articles', $articles);       
         $this->getLayout()->getBlock('article')->setData('articles', $articles);        
@@ -66,7 +66,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         if($this->getRequest()->getPost()){
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             
-            if((strtotime($this->getRequest()->getPost('deadlinetime')) < time()) || (strtotime($this->getRequest()->getPost('eventtime')) < time())){
+            if((strtotime($this->getRequest()->getPost('deadlinetime')) < Mage::getModel('core/date')->timestamp(time())) || (strtotime($this->getRequest()->getPost('eventtime')) < Mage::getModel('core/date')->timestamp(time()))){
                 Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Your date input is invalid.'));
                 $this->_redirect('*/*/new');
             }
@@ -75,7 +75,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('The event date must be greater than the deadline.'));
                 $this->_redirect('*/*/new');
             } 
-            $diff = strtotime($this->getRequest()->getPost('eventtime')) - time();
+            $diff = strtotime($this->getRequest()->getPost('eventtime')) - Mage::getModel('core/date')->timestamp(time());
             if($diff/31536000 > 2){
                 Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('The event date cannot greater than 2 years from now.'));
                 $this->_redirect('*/*/new');
@@ -264,8 +264,15 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
           $_REQUEST["lr_currency"].":".
           $conf_merchantSecurityWord;
           
+          var_dump($_REQUEST["lr_paidto"]);
+          var_dump($_REQUEST["lr_paidby"]);
+          var_dump($_REQUEST["lr_store"]);
+          var_dump($_REQUEST["lr_amnt"]);
+          var_dump($_REQUEST["lr_transfer"]);
+          var_dump($_REQUEST["lr_currency"]);
+          
         //Calculating hash
-        $hash = strtoupper(bin2hex(mhash(MHASH_SHA256, $str)));var_dump($hash);die;  
+        $hash = strtoupper(bin2hex(mhash(MHASH_SHA256, $str))); 
         
         //Let's check that all parameters exist and match and that the hash 
         //string we computed matches the hash string that was sent by LR system.

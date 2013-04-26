@@ -48,4 +48,10 @@
         </reference>
     </article_index_withdraw>
     
+    <article_index_toolbar>
+        <reference name="content">
+             <block type="article/toolbar" name="article/toolbar" template="article/toolbar.phtml" />
+        </reference>
+    </article_index_toolbar>
+    
 </layout>

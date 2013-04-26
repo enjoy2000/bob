@@ -2,13 +2,27 @@
 
 class Bob_Article_Block_Index extends Mage_Core_Block_Template
 {
-	protected function _prepareLayout(){
-		
-		//var_dump(count(Mage::getModel('article/category')->getCollection()));die;
-		
-		$connection = Mage::getSingleton('core/resource')->getConnection('core_write');
-		$categories = $connection->fetchAll('SELECT `name` FROM `article_category`');
-		$this->setCategories($categories);
-		parent::_prepareLayout();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        $collection = Mage::getModel('article/article')->getCollection();
+        $this->setCollection($collection);
+    }
+ 
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+ 
+        $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
+        $pager->setAvailableLimit(array(5=>5,10=>10,20=>20,'all'=>'all'));
+        $pager->setCollection($this->getCollection());
+        $this->setChild('pager', $pager);
+        $this->getCollection()->load();
+        return $this;
+    }
+ 
+    public function getPagerHtml()
+    {
+        return $this->getChildHtml('pager');
+    }
 }

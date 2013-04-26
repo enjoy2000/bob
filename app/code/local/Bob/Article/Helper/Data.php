@@ -6,7 +6,7 @@ class Bob_Article_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $unix_time = $time;   
         $unix_time = strtotime($unix_time);
-        $current_time = time();
+        $current_time = Mage::getModel('core/date')->timestamp(time());
         $diff = $unix_time - $current_time;
         //$diff should be positive and not 0
         if( 1 > $diff ){
@@ -125,7 +125,7 @@ class Bob_Article_Helper_Data extends Mage_Core_Helper_Abstract
     }
     
     public function getTimeWeight($date){
-        $diff = strtotime($date) - time();
+        $diff = strtotime($date) - Mage::getModel('core/date')->timestamp(time());
         if($diff > 1){
             return round($diff/60/60, 3);
         } else{
