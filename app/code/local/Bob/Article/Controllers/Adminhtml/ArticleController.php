@@ -96,8 +96,9 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                     $percentWeight = $bet->getDisagreeWeight()/$article->getDisagreeWeight();
                                     $customer = Mage::getModel('customer/customer')->load($bet->getCustomerId());
                                     $customer->setBalance($customer->getBalance() + ($percentBet + $percentWeight)*$article->getAgree()*0.45 )
-                                             ->save();    
-                                    $bet->setStatus('0')->save();
+                                             ->save();
+                                    $bet->setStatus('0');
+                                    $bet->save();
                                     $amount = $amount + ($percentBet + $percentWeight)*$article->getAgree()*0.45;
                                 }
                                 
@@ -169,6 +170,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                 $this->_redirect('*/*/');
                 return;
             } catch (Exception $e) {
+                var_dump($e);die;
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
                 Mage::getSingleton('adminhtml/session')->setArticleData($this->getRequest()->getPost());
                 $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
