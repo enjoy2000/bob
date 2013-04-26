@@ -1,0 +1,19 @@
+	<br />
+	<?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+<div class="one-half">
+<h1><?php echo Mage::helper('article')->__('Withdraw') ?></h1>
+<?php if($customer->getLraccount()): ?>
+<br /><strong>Your Current Balance:</strong> <?php echo round($customer->getBalance(), 2) ?><br /><br />
+<?php endif; ?>
+<form action="<?php echo $this->getUrl('article/index/withdraw') ?>" method="post" autocomplete="off">
+		<div id="contactForm">
+		<strong>Amount:</strong><br /><input type="number" step="0.01" min="0" maxlength="11" name="lrAmount" id="id_email"/><br />
+		
+		<strong>Password:</strong><br /><input id="id_password" type="password" name="password" maxlength="120"/><br />
+		<input type="submit" value="Withdraw" name="submit" id="submit"/>
+		</div>
+</form>
+<div>
+
+</div>
+</div>

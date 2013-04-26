@@ -39,11 +39,23 @@
    <div id="menu-holder">
       <div class="wrapper">
          <ul id="nav" class="sf-menu">
-            <li ><a href="<?php echo $this->getBaseUrl() ?>">Home<span class="subheader">Start here</span></a></li>
-            <li ><a href="<?php echo $this->getBaseUrl() ?>article/index/">Statements<span class="subheader">To bet</span></a></li>
-            <li  ><a href="<?php echo $this->getBaseUrl() ?>article/index/new">Submit<span class="subheader">Your own</span></a></li>
-            <li ><a href="<?php echo $this->getBaseUrl() ?>help">Help<span class="subheader">Learn more</span></a></li>
-            <li >
+            <li<?php echo strpos($this->getLayout()->getBlock('root')->getBodyClass(), 'cms-index-index') ? ' class="current-menu-item"' : ''  ?>><a href="<?php echo $this->getBaseUrl() ?>">Home<span class="subheader">Start here</span></a></li>
+            <li<?php echo strpos($this->getLayout()->getBlock('root')->getBodyClass(), 'article-index-index') ? ' class="current-menu-item"' : ''  ?>><a href="<?php echo $this->getBaseUrl() ?>article/index/">Statements<span class="subheader">To bet</span></a></li>
+            <li<?php echo strpos($this->getLayout()->getBlock('root')->getBodyClass(), 'article-index-new') ? ' class="current-menu-item"' : ''  ?>><a href="<?php echo $this->getBaseUrl() ?>article/index/new">Submit<span class="subheader">Your own</span></a></li>
+            <li<?php echo strpos($this->getLayout()->getBlock('root')->getBodyClass(), 'cms-help') ? ' class="current-menu-item"' : ''  ?>><a href="<?php echo $this->getBaseUrl() ?>help">Help<span class="subheader">Learn more</span></a></li>
+            <li<?php 
+                  $strs = array('customer-account', 'article-index-withdraw', 'article-index-changelraccount');
+                  $i = 0;
+                  foreach($strs as $str){
+                    if(strpos($this->getLayout()->getBlock('root')->getBodyClass(), $str) != false){
+                        $i++;
+                    }
+                  }
+                  if($i > 0){
+                    echo ' class=current-menu-item';
+                  }
+             ?>>
+            
             <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()) : ?>
                <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>">Account<span class="subheader"> Login </span></a>
                <ul>
@@ -51,7 +63,7 @@
                   <li><a href="<?php echo $this->getUrl('customer/account/create') ?>"><span>Register</span></a></li>
                </ul>
             <?php else: ?>
-            <a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>">Account<span class="subheader"><?php echo Mage::helper('customer')->getCustomerName() ?></span></a>
+            <a href="<?php echo Mage::helper('customer')->getAccountUrl(); ?>">Account<span class="subheader"><?php echo Mage::helper('customer')->getCustomerName() ?></span></a>
                <ul>
                   <li><a href="<?php echo Mage::helper('customer')->getAccountUrl(); ?>"><span>Profile</span></a></li>
                   <li><a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><span>Logout</span></a></li>

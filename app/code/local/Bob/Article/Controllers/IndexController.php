@@ -194,7 +194,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                                 ->setAgreeWeight($article->getAgreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
                                 ->save();
                         
-                        $this->_redirect('*/*/success');
+                        Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('You have successly bet on this statement.'));
+                        $this->_redirect('*/*/item', array('id' => $this->getRequest()->getPost('itemId')));
                     }
                 }
                 elseif($this->getRequest()->getPost('betSide') == 2){
@@ -218,17 +219,17 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                                 ->setDisagreeWeight($article->getDisagreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
                                 ->save();
                         Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Your bet has successly submitted.'));
-                        $this->_redirect('*/*/item?id='.$article->getArticleId());
+                        $this->_redirect('*/*/item?id='.$this->getRequest()->getPost('itemId'));
                     }
                 }
                 else{
                     Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('You have to choose bet side.'));
-                    $this->_redirect('*/*/item?id='.$article->getArticleId());
+                    $this->_redirect('*/*/item?id='.$this->getRequest()->getPost('itemId'));
                 }
             }
             else{
                 Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Not enough balance.'));
-                $this->_redirect('*/*/item?id='.$article->getArticleId());
+                $this->_redirect('*/*/item?id='.$this->getRequest()->getPost('itemId'));
             }
         }
     }
@@ -271,7 +272,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 ->setCreatedDate(date("Y-m-d H:i:s"))
                 ->setLog('Deposit from LibertyReserve')
                 ->save();
-            Mage::getSingleton('core/session')->addSucess(Mage::helper('article')->__('Payment was verified and is successful.'));
+            Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Payment was verified and is successful.'));
             $this->_reidrect('customer/account/');
             
           $msgBody = "Payment was verified and is successful.\n\n";
@@ -307,6 +308,11 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     {
         $this->loadLayout();
         $this->renderLayout();
+        
+        if(!Mage::getSingleton('customer/session')->isLoggedIn()){
+            $this->_redirect('article/account/login');
+        }
+        
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         if($this->getRequest()->getPost()){
             $password = $this->getRequest()->getPost('password');            
@@ -340,5 +346,63 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     {
         $this->loadLayout();
         $this->renderLayout();
+        
+        require "LibertyReserveAPI.php";
+        if(!Mage::getSingleton('customer/session')->isLoggedIn()){
+            $this->_redirect('article/account/login');
+        }
+        
+        $customer = Mage::getSingleton('customer/session')->getCustomer();        
+        if($this->getRequest()->getPost()){
+            $password = $this->getRequest()->getPost('password');            
+            $oldPass = $customer->getPasswordHash();
+            if (Mage::helper('core/string')->strpos($oldPass, ':')) {
+                list($_salt, $salt) = explode(':', $oldPass);
+            } else {
+                $salt = false;
+            }
+            if ($customer->hashPassword($password, $salt) != $oldPass) {
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Password is incorrect.'));
+                $this->_redirect('*/*/withdraw');
+                //redirect to a block or your own custom block in order to display the message
+            }
+            else{
+                if(strlen($this->getRequest()->getPost('lrAmount') > 0)){
+                    if($this->getRequest()->getPost('lrAmount') < $customer->getBalance()){
+                        $auth = new Authentication("U0832731", "bob-testing", '747c7fdce094cdf510dcd4697c3dfd82*&^#^%hfksdjhfsdKSD.&*#^@%*@^*^*TFGHBSFJHSGFJSBFKFJhfjksdhf37^&#(');
+    
+                        $payee = $customer->getLraccount();
+                        $currency = "Usd";
+                        $amount = $this->getRequest()->getPost('lrAmount');
+                        $memo = "Withdraw";
+                        $private = "false";
+                        $purpose = "Salary";
+                        $reference = "Reference1";
+                        
+                        $apiAgent = ApiAgentFactory::createApiAgent(ApiAgentFactory::JSON, $auth); 
+                        $transfer = $apiAgent->transfer($payee, $currency, $amount, $private, $purpose, $reference, $memo);
+                        
+                        $customer->setBalance($customer->getBalance() - $this->getRequest()->getPost('lrAmount'))
+                        ->save();
+                        $log = Mage::getModel('article/log');
+                        $log->setCustomerId($customer->getId())
+                            ->setCreatedDate(Date('Y-m-d H:i:s'))
+                            ->setAmount(-1*$this->getRequest()->getPost('lrAmount'))
+                            ->setLog('Withdraw')
+                            ->save(); 
+                        Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Your withdraw is success. Please check your Liberty Reserve Account.<br />If there is any problem, please <a href="malto:john@reid.cc">contact us</a>.'));
+                        $this->_redirect('customer/account');
+                    }
+                    else{
+                        Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Your balance is not enough.'));
+                        $this->_redirect('article/index/withdraw');
+                    }
+                }
+                else{
+                    Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('You have to put valid amount.'));
+                    $this->_redirect('*/*/withdraw');
+                }
+            }
+        }
     }
 }

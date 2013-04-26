@@ -7,7 +7,7 @@
 <?php endif; ?>
 <form action="<?php echo $this->getUrl('article/index/changelraccount') ?>" method="post" autocomplete="off">
 		<div id="contactForm">
-		<strong>New Liberty Reserve Account:</strong><br /><input type="text" name="lraccount" id="id_email"/><br />
+		<strong>New Liberty Reserve Account:</strong><br /><input type="text" maxlength="9" name="lraccount" id="id_email"/><br />
 		
 		<strong>Password:</strong><br /><input id="id_password" type="password" name="password" maxlength="120"/><br />
 		<input type="submit" value="Change" name="submit" id="submit"/>
