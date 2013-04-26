@@ -65,11 +65,24 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         }
         if($this->getRequest()->getPost()){
             $customer = Mage::getSingleton('customer/session')->getCustomer();
-            //echo $customer->getBalance();die;
+            
+            if((strtotime($this->getRequest()->getPost('deadlinetime')) < time()) || (strtotime($this->getRequest()->getPost('eventtime')) < time())){
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Your date input is invalid.'));
+                $this->_redirect('*/*/new');
+            }
+            
+            if(strtotime($this->getRequest()->getPost('deadlinetime')) >= strtotime($this->getRequest()->getPost('eventtime')) ){
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('The event date must be greater than the deadline.'));
+                $this->_redirect('*/*/new');
+            } 
+            $diff = strtotime($this->getRequest()->getPost('eventtime')) - time();
+            if($diff/31536000 > 2){
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('The event date cannot greater than 2 years from now.'));
+                $this->_redirect('*/*/new');
+            }
             if($customer->getBalance() >= (0.10 + $this->getRequest()->getPost('betAmount')) ){
                 try{
-                    $bet = Mage::getModel('article/bet');
-                    $log = Mage::getModel('article/log');
+                    $bet = Mage::getModel('article/bet');                    
                     $form = $this->getRequest()->getPost();
                     //echo $customer->getBalance() - 0.10 - $form['betAmount'];die;                    
                     $article = Mage::getModel('article/article');
@@ -78,14 +91,12 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                     if($form['betSide'] == 1){
                         $article->setAgree($form['betAmount']);
                         $article->setAgreeWeight($timeweight*$form['betAmount']);
-                        $betAmount = $form['betAmount'];
                         $bet->setAgree($form['betAmount']);
                         $bet->setAgreeWeight($timeweight*$form['betAmount']);
                     }
                     elseif($form['betSide'] == 2){
                         $article->setDisagree($form['betAmount']);
                         $article->setDisagreeWeight($timeweight*$form['betAmount']);
-                        $betAmount = $form['betAmount'];
                         $bet->setDisagree($form['betAmount']);
                         $bet->setDisagreeWeight($timeweight*$form['betAmount']);
                     }
@@ -104,7 +115,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                             ->setUserPost($customer->getId())
                             ->save();
                             
-                    $customer->setBalance($customer->getBalance() - 0.10 - $betAmount)->save();                    //write log
+                    $customer->setBalance($customer->getBalance() - 0.10 - $form['betAmount'])->save();                    //write log
                     
                     $bet->setCustomerId($customer->getId())
                         ->setBetDate(date("Y-m-d H:i:s"));
@@ -113,12 +124,13 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         $log_txt = '<a href="'. Mage::getUrl('article/index/item?id='. $article->getArticleId())  . '">Bet</a>';
                         $log_txt2 ='<a href="'. Mage::getUrl('article/index/item?id='. $article->getArticleId())  . '">Submission Fee</a>';
                     }
-                    
+                    $log = Mage::getModel('article/log');
                     $log->setCustomerId($customer->getId())
                         ->setAmount(-1*$this->getRequest()->getPost('betAmount'))
                         ->setCreatedDate(date("Y-m-d H:i:s"))
                         ->setLog($log_txt)
                         ->save();
+                    $log = Mage::getModel('article/log');
                     $log->setCustomerId($customer->getId())
                     ->setAmount(-0.010)
                     ->setCreatedDate(date("Y-m-d H:i:s"))
