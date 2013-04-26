@@ -844,15 +844,4 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
     {
         return Mage::helper('customer/address')->isVatValidationEnabled($store);
     }
-    
-    public function withdrawAction()
-    {
-        $session = $this->_getSession();
-        if ($session->isLoggedIn()) {
-            $this->_redirect('*/*/');
-            return;
-        }
-    }
-    
-    
 }

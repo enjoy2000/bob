@@ -53,6 +53,90 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
     {
         if ( $this->getRequest()->getPost() ) {
             try {
+                $bets = Mage::getModel('article/bet')->getCollection()
+                        ->addFieldToFilter('article_id', $this->getRequest()->getPost('article_id'))
+                        ->addFieldToFilter('status', '1')
+                        ->addFieldToFilter('disagree', array(
+                                'gt' => '0'
+                        ))
+                        ->load();
+                if(($this->getRequest()->getPost('decision') == 0) || ($this->getRequest()->getPost('decision') == 1)){
+                    if($this->getRequest()->getPost('status') != "closed"){
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('article')->__('You must set status to "closed" if you choose True or False.'));
+                        $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                    }
+                    else{
+                        if(count($bets) <= 0){
+                            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was closed. No active bet.'));
+                            $this->_redirect('*/*/');
+                        }
+                        else{
+                            $article = Mage::getModel('article/article')->load($this->getRequest()->getPost('article_id'));
+                            if($this->getRequest()->getPost('decision') == 0){
+                                $amount = 0;
+                                $submitter = Mage::getModel('customer/customer')->load($article->getUserPost());
+                                $submitter->setBalance($submitter->getBalance() + $article->getAgree()*0.05)->save();
+                                $log = Mage::getModel('article/log');
+                                $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
+                                $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
+                                $log->setCustomerId($submitter->getId())
+                                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                                    ->setAmount($article->getAgree()*0.05)
+                                    ->setLog($log_txt)
+                                    ->save();
+                                foreach($bets as $bet){
+                                    $percentBet = $bet->getDisagree()/$article->getDisagree();
+                                    $percentWeight = $bet->getDisagreeWeight()/$article->getDisagreeWeight();
+                                    $customer = Mage::getModel('customer/customer')->load($bet->getCustomerId());
+                                    $customer->setBalance($customer->getBalance() + ($percentBet + $percentWeight)*$article->getAgree()*0.45 )
+                                             ->save();    
+                                    $bet->setStatus('0')->save();
+                                    $amount = $amount + ($percentBet + $percentWeight)*$article->getAgree()*0.45;
+                                }
+                                $log = Mage::getModel('article/log'); 
+                                $log->setCustomerId($customer->getId())
+                                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                                    ->setAmount($amount)
+                                    ->setLog($log_txt2)
+                                    ->save();
+                                    
+                                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was successly set to False.'));
+                                $this->_redirect('*/*/');
+                            }
+                            else{
+                                $amount = 0;
+                                $submitter = Mage::getModel('customer/customer')->load($article->getUserPost());
+                                $submitter->setBalance($submitter->getBalance() + $article->getDisagree()*0.05)->save();
+                                $log = Mage::getModel('article/log');
+                                $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
+                                $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
+                                $log->setCustomerId($submitter->getId())
+                                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                                    ->setAmount($article->getDisagree()*0.05)
+                                    ->setLog($log_txt)
+                                    ->save();
+                                foreach($bets as $bet){
+                                    $percentBet = $bet->getAgree()/$article->getAgree();
+                                    $percentWeight = $bet->getAgreeWeight()/$article->getAgreeWeight();
+                                    $customer = Mage::getModel('customer/customer')->load($bet->getCustomerId());
+                                    $customer->setBalance($customer->getBalance() + ($percentBet + $percentWeight)*$article->getDisagree()*0.45 )
+                                             ->save();    
+                                    $bet->setStatus('0')->save();
+                                    $amount = $amount + ($percentBet + $percentWeight)*$article->getDisagree()*0.45;
+                                }
+                                $log = Mage::getModel('article/log'); 
+                                $log->setCustomerId($customer->getId())
+                                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                                    ->setAmount($amount)
+                                    ->setLog($log_txt2)
+                                    ->save();
+                                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was successly set to True.'));
+                                $this->_redirect('*/*/');
+                            }
+                        }
+                    }                    
+                }
+                
                 $postData = $this->getRequest()->getPost();
                 $articleModel = Mage::getModel('article/article');
                 
