@@ -5,24 +5,47 @@
              <block type="article/index" name="article" template="article/article.phtml" />
         </reference>
     </article_index_index>
+    
     <article_index_new>
         <reference name="content">
              <block type="article/new" name="article/new" template="article/new.phtml" />
         </reference>
     </article_index_new>
+    
     <article_index_item>
         <reference name="content">
              <block type="core/template" name="article/item" template="article/item.phtml" />
         </reference>
     </article_index_item>
+    
     <article_index_success>
         <reference name="content">
              <block type="core/template" name="article/success" template="article/success.phtml" />
         </reference>
     </article_index_success>
+    
+    <article_index_status>
+        <reference name="content">
+             <block type="core/template" name="article/status" template="article/status.phtml" />
+        </reference>
+    </article_index_status>
+    
     <article_index_search>
         <reference name="content">
              <block type="article/search" name="article/search" template="article/search.phtml" />
         </reference>
     </article_index_search>
+    
+    <article_index_changelraccount>
+        <reference name="content">
+             <block type="core/template" name="article/changelraccount" template="article/changelraccount.phtml" />
+        </reference>
+    </article_index_changelraccount>
+    
+    <article_index_withdraw>
+        <reference name="content">
+             <block type="article/withdraw" name="article/withdraw" template="article/withdraw.phtml" />
+        </reference>
+    </article_index_withdraw>
+    
 </layout>

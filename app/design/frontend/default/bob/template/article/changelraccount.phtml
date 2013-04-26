@@ -1,0 +1,19 @@
+	<br />
+	<?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+<div class="one-half">
+<h1>Change Account</h1>
+<?php if($customer->getLraccount()): ?>
+<br /><strong>Current Liberty Reserve Account:</strong> <?php echo $customer->getLraccount() ?><br /><br />
+<?php endif; ?>
+<form action="<?php echo $this->getUrl('article/index/changelraccount') ?>" method="post" autocomplete="off">
+		<div id="contactForm">
+		<strong>New Liberty Reserve Account:</strong><br /><input type="text" name="lraccount" id="id_email"/><br />
+		
+		<strong>Password:</strong><br /><input id="id_password" type="password" name="password" maxlength="120"/><br />
+		<input type="submit" value="Change" name="submit" id="submit"/>
+		</div>
+</form>
+<div>
+
+</div>
+</div>

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Bob_Article>
-            <version>0.1.3</version>
+            <version>0.1.4</version>
         </Bob_Article>
     </modules>
     <frontend>
@@ -36,7 +36,7 @@
         
     	<fieldsets>
     		<customer_account>
-    			<balance2><create>1</create><update>1</update></balance2>
+    			<lraccount><create>1</create><update>1</update></lraccount>
     		</customer_account>
     	</fieldsets>
     </admin>

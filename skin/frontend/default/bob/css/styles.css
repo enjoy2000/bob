@@ -1022,7 +1022,9 @@ td, th{
 .forward-box,
 .stop-box,
 .upload-box,
-.errorlist
+.errorlist,
+li.error-msg ul,
+li.success-msg ul
 {
 	border: 1px solid;
 	margin: 10px 0px;
@@ -1046,14 +1048,16 @@ td, th{
 	background-image: url('../img/knobs-icons/Knob Attention.png');
 }
 
-.blue-box{
+.blue-box
+{
 	color: #00529B;
 	background-color: #BDE5F8;
 	background-image: url('../img/knobs-icons/Knob Blue.png');
 }
 
 .error-box,
-.errorlist
+.errorlist,
+li.error-msg ul
 {
 	color: #D8000C;
 	background-color: #FFBABA;
@@ -1078,7 +1082,9 @@ td, th{
 	background-image: url('../img/knobs-icons/Knob Info.png');
 }
 
-.success-box{
+.success-box,
+li.success-msg ul
+{
 	color: #4F8A10;
 	background-color: #DFF2BF;
 	background-image: url('../img/knobs-icons/Knob Valid Green.png');

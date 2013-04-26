@@ -197,7 +197,7 @@ New customer registration
         <reference name="left">
           <action method="unsetChild"><name>left.permanent.callout</name></action>
         </reference>
-    </customer_account_edit>
+    </customer_account_edit>  
 
 <!--
 Customer account pages, rendered for all tabs in dashboard
@@ -281,5 +281,6 @@ Customer account address edit page
             <block type="customer/address_edit" name="customer_address_edit" template="customer/address/edit.phtml"/>
         </reference>
     </customer_address_form>
+    
 
 </layout>

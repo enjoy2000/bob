@@ -20,12 +20,16 @@ class Bob_Article_Block_Adminhtml_Article_Edit_Tab_Form extends Mage_Adminhtml_B
             'name'      => 'decision',
             'values'    => array(
                 array(
-                    'value'     => 1,
+                    'value'     => 'NULL',
+                    'label'     => Mage::helper('article')->__(' '),
+                ),
+                array(
+                    'value'     => '1',
                     'label'     => Mage::helper('article')->__('True'),
                 ),
  
                 array(
-                    'value'     => 0,
+                    'value'     => '0',
                     'label'     => Mage::helper('article')->__('False'),
                 ),
                 )

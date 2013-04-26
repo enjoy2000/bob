@@ -66,7 +66,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         if($this->getRequest()->getPost()){
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             //echo $customer->getBalance();die;
-            if($customer->getBalance() > (0.10 + $this->getRequest()->getPost('betAmount')) ){
+            if($customer->getBalance() >= (0.10 + $this->getRequest()->getPost('betAmount')) ){
                 try{
                     $bet = Mage::getModel('article/bet');
                     $log = Mage::getModel('article/log');
@@ -110,8 +110,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         ->setBetDate(date("Y-m-d H:i:s"));
                     if($article->isObjectNew()){
                         $bet->setArticleId($article->getArticleId())->save();
-                        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id=') . $article->getArticleId() . '>Bet</a>';
-                        $log_txt2 ='<a href="'. Mage::getUrl('article/index/item?id=') . $article->getArticleId() . '>Submission Fee</a>';
+                        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id='. $article->getArticleId())  . '">Bet</a>';
+                        $log_txt2 ='<a href="'. Mage::getUrl('article/index/item?id='. $article->getArticleId())  . '">Submission Fee</a>';
                     }
                     
                     $log->setCustomerId($customer->getId())
@@ -127,12 +127,12 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                     $this->_redirect('*/*/');
                     
                 } catch (Exception $e){
-                    Mage::getSingleton('article/article')->addError($e->getMessage());
+                    Mage::getSingleton('core/session')->addError($e->getMessage());
                     $this->_redirect('*/*/new');
                 }
             }
             else{
-                echo Mage::helper('article')->__('Not enough balance.');
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Your balance is not enough.'));
                 $this->_redirect('*/*/new');
             }            
         }
@@ -151,12 +151,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             
             if(is_object($item)){
                 $this->getLayout()->getBlock('article/item')->setData('item', $item);
-            } else{
-                $this->_redirect('*/*/');
-            }
-        } else{
-            $this->_redirect('*/*/');
-        }
+            } 
+        } 
         $this->renderLayout();                 
         
     }
@@ -168,7 +164,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         $log = Mage::getModel('article/log');
         $article = Mage::getModel('article/article');
         
-        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id=') . $this->getRequest()->getPost('itemId') . '>Bet</a>';
+        $log_txt = '<a href="'. Mage::getUrl('article/index/item?id='. $this->getRequest()->getPost('itemId'))  . '">Bet</a>';
         
         if($this->getRequest()->getPost()){
             $item = Mage::getModel('article/article')->load($this->getRequest()->getPost('itemId'));
@@ -176,7 +172,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 ->setArticleId($this->getRequest()->getPost('itemId'))
                 ->setBetDate(date("Y-m-d H:i:s"));
             
-            if($customer->getBalance() > $this->getRequest()->getPost('amount')){
+            if($customer->getBalance() >= $this->getRequest()->getPost('amount')){
                 if($this->getRequest()->getPost('betSide') == 1){
                     if($this->getRequest()->getPost('amount') % 0.010 != 0){                    
                         Mage::throwException('Your bet must be a multiple of 0.010.');
@@ -221,24 +217,26 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         $article->setDisagree($article->getDisagree() + $this->getRequest()->getPost('amount'))
                                 ->setDisagreeWeight($article->getDisagreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
                                 ->save();
-                        
-                        $this->_redirect('*/*/success');
+                        Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Your bet has successly submitted.'));
+                        $this->_redirect('*/*/item?id='.$article->getArticleId());
                     }
                 }
                 else{
-                    Mage::getSingleton('adinhtml/session')->addError(Mage::helper('article')->__('You have to choose bet side.'));
-                    Mage::throwException('You have to choose bet side.');
+                    Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('You have to choose bet side.'));
+                    $this->_redirect('*/*/item?id='.$article->getArticleId());
                 }
             }
             else{
-                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('article')->__('Not enough balance.'));
-                throw new Exception('Not enough balance2');
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Not enough balance.'));
+                $this->_redirect('*/*/item?id='.$article->getArticleId());
             }
         }
     }
     
     public function statusAction()
     {
+        $this->loadLayout();
+        $this->renderLayout();
         $conf_merchantAccountNumber = "U0832731";
         $conf_merchantStoreName = "bob-sci";
         $conf_merchantSecurityWord = "Frogface101@";
@@ -273,6 +271,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                 ->setCreatedDate(date("Y-m-d H:i:s"))
                 ->setLog('Deposit from LibertyReserve')
                 ->save();
+            Mage::getSingleton('core/session')->addSucess(Mage::helper('article')->__('Payment was verified and is successful.'));
+            $this->_reidrect('customer/account/');
             
           $msgBody = "Payment was verified and is successful.\n\n";
         }
@@ -299,6 +299,45 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     }
     
     public function searchAction(){
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+    
+    public function changelraccountAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        if($this->getRequest()->getPost()){
+            $password = $this->getRequest()->getPost('password');            
+            $oldPass = $customer->getPasswordHash();
+            if (Mage::helper('core/string')->strpos($oldPass, ':')) {
+                list($_salt, $salt) = explode(':', $oldPass);
+            } else {
+                $salt = false;
+            }
+            if ($customer->hashPassword($password, $salt) != $oldPass) {
+                Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Password is incorrect.'));
+                $this->_redirect('*/*/changelraccount');
+                //redirect to a block or your own custom block in order to display the message
+            }
+            else{
+                if(strlen($this->getRequest()->getPost('lraccount') == 8)){
+                    $customer->setLraccount($this->getRequest()->getPost('lraccount'))
+                    ->save();
+                    Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Your Liberty Reserve Account has been changed.'));
+                    $this->_redirect('customer/account');
+                }
+                else{
+                    Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('Your Liberty Reserve Account is invalid.'));
+                    $this->_redirect('*/*/changelraccount');
+                }
+            }
+        }
+    }
+    
+    public function withdrawAction()
+    {
         $this->loadLayout();
         $this->renderLayout();
     }

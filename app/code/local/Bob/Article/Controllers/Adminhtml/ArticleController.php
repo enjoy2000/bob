@@ -55,13 +55,12 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
             try {
                 $postData = $this->getRequest()->getPost();
                 $articleModel = Mage::getModel('article/article');
-               
-                $articleModel->setId($this->getRequest()->getParam('id'))
-                    ->setTitle($postData['title'])
-                    ->setContent($postData['content'])
-                    ->setStatus($postData['status'])
+                
+                $articleModel
+                    ->setData($postData)
+                    ->setId($this->getRequest()->getParam('id'))
                     ->save();
-               
+                                
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully saved'));
                 Mage::getSingleton('adminhtml/session')->setArticleData(false);
  
@@ -107,8 +106,111 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
         );
     }
     
-    public function massDeleteAction(){
-    	$articleIds = $this->getRequest()->get('article_id');
-    	var_dump($articleIds);
+    public function massDeleteAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->setId($v)->delete();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully deleted'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+    
+    public function massAwaitingAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->load($v)->setStatus('awaiting')->save();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully changed status.'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+    
+    public function massAvailableAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->load($v)->setStatus('available')->save();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully changed status.'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+    
+    public function massWaitingAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->load($v)->setStatus('waiting')->save();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully changed status.'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+    
+    public function massClosedAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->load($v)->setStatus('closed')->save();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully changed status.'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
+    }
+    
+    public function massRejectedAction()
+    {
+        if(is_array($this->getRequest()->getParam('article_id'))) {
+        	try{
+                $articleIds = $this->getRequest()->get('article_id');
+            	foreach($articleIds as $k => $v){
+            	   Mage::getModel('article/article')->load($v)->setStatus('rejected')->save();
+            	}
+               Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item(s) were successfully changed status.'));
+               $this->_redirect('*/*/');
+            }catch(Exception $e){
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
+        $this->_redirect('*/*/');
     }
 }

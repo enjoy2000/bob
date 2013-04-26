@@ -1,3 +1,4 @@
+<?php if($this->getData('item')): ?>
      <br />
    <div class="two-third">      
       <?php if($this->getData('item')->getStatus() == 'awaiting'): ?>
@@ -44,6 +45,17 @@
          <div id="contactForm"><input type="submit" value="Bet" name="Bet" id="submit" /></div>
       </form>
       <?php endif; ?>
+      <?php $bets = Mage::getModel('article/bet')->getCollection()
+                        ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                        ->addFieldToFilter('article_id', $this->getData('item')->getArticleId())
+                        ->load()              
+      ?>
+      <?php if(count($bets) > 0): ?>
+      <h4>Your bets on this item</h4>
+            <?php foreach($bets as $bet): ?>
+		      <?php echo $bet->getAgree() == 0 ? 'Disagree for '.$bet->getDisagree().' (Weighted: '.$bet->getDisagreeWeight().').<br />': 'Agree for '.$bet->getAgree().' (Weighted: '.$bet->getAgreeWeight().').<br />' ?>
+            <?php endforeach; ?>
+      <?php endif; ?>
    </div>
    <div class="clear "></div>
 <script type="text/javascript">
@@ -62,3 +74,9 @@ jQuery('#betForm').submit(function() {
     }
 });
 </script>
+<?php else: ?>
+<br />
+<div class="two-third">
+    <p class="error-box">This page doesn't exist or you do not have permission to view it.</p>
+</div>
+<?php endif; ?>

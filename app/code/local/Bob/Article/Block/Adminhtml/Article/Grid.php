@@ -34,14 +34,17 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
             'align'     =>'left',
             'index'     => 'title',
         ));
- 
-        /*
-        $this->addColumn('content', array(
-            'header'    => Mage::helper('article')->__('Item Content'),
-            'width'     => '150px',
-            'index'     => 'content',
+                
+        $this->addColumn('decision', array(
+            'header'    => Mage::helper('article')->__('decision'),
+            'width'     => '120px',
+            'index'     => 'decision',
+            'type'      => 'options',
+            'options'   => array(
+                '1'   => 'True',
+                '0'   => 'False',
+            )
         ));
-        */
  
         $this->addColumn('created_time', array(
             'header'    => Mage::helper('article')->__('Creation Time'),
@@ -102,14 +105,29 @@ class Bob_Article_Block_Adminhtml_Article_Grid extends Mage_Adminhtml_Block_Widg
     			'confirm'  => Mage::helper('article')->__('Are you sure?')
     	));
     
-    	$this->getMassactionBlock()->addItem('active', array(
-    			'label'    => Mage::helper('article')->__('Active'),
-    			'url'      => $this->getUrl('*/*/massActive')
+    	$this->getMassactionBlock()->addItem('awaiting', array(
+    			'label'    => Mage::helper('article')->__('Awaiting'),
+    			'url'      => $this->getUrl('*/*/massawaiting')
     	));
     
-    	$this->getMassactionBlock()->addItem('deactive', array(
-    			'label'    => Mage::helper('article')->__('Deactive'),
-    			'url'      => $this->getUrl('*/*/massDeactive')
+    	$this->getMassactionBlock()->addItem('available', array(
+    			'label'    => Mage::helper('article')->__('Available'),
+    			'url'      => $this->getUrl('*/*/massAvailable')
+    	));
+        
+        $this->getMassactionBlock()->addItem('waiting', array(
+    			'label'    => Mage::helper('article')->__('Waiting'),
+    			'url'      => $this->getUrl('*/*/massWaiting')
+    	));
+        
+        $this->getMassactionBlock()->addItem('closed', array(
+    			'label'    => Mage::helper('article')->__('Closed'),
+    			'url'      => $this->getUrl('*/*/massClosed')
+    	));
+        
+        $this->getMassactionBlock()->addItem('rejected', array(
+    			'label'    => Mage::helper('article')->__('Rejected'),
+    			'url'      => $this->getUrl('*/*/massRejected')
     	));
     
     	return $this;

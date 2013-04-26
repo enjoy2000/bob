@@ -49,7 +49,7 @@
 
 <div id="page-content">
    <br />
-   <h4 class="line-divider"><?php echo $this->__('Account details') ?></h4>
+   <h4 class="line-divider"><?php echo $this->__('Profile') ?></h4>
    <?php echo $this->getChildHtml('info'); ?>
    Please <a href="mailto:john@reid.cc">let us know</a> if you have any issues with your account.<br /><br />
    <h4 class="line-divider">Your statements</h4>   
@@ -139,6 +139,10 @@
                     ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
                     ->addFieldToFilter('status', '1')
                     ->load();
+   $closedBet = Mage::getModel('article/bet')->getCollection()
+                    ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('status', '0')
+                    ->load();
     ?>
    <h4 class="line-divider">Your bets</h4>
    <h6 class="toggle-trigger"><a href="#">Your open bets (<?php echo count($openBet) ?>)</a></h6>
@@ -151,26 +155,62 @@
         <?php else : ?> 
             <?php foreach($openBet as $bet): ?>       
              <p>
-                <a href="<?php echo $this->getUrl('article/index/item?id=' . $bet->getArticleId()) ?>"><?php echo $article->getTitle() ?></a>
+             <?php echo $bet->getAgree() == 0 ? 'Disagree on ' : 'Agree on ' ?>
+                "<a href="<?php echo $this->getUrl('article/index/item?id=' . $bet->getArticleId()) ?>"><?php echo Mage::getModel('article/article')->load($bet->getArticleId())->getTitle() ?></a>"
+              for <?php echo $bet->getAgree() == 0 ? $bet->getDisagree() : $bet->getAgree() ?> (Weighted: <?php echo $bet->getAgreeWeight() == 0 ? $bet->getDisagreeWeight() : $bet->getAgreeWeight() ?>).
              </p>
             <?php endforeach; ?>
         <?php endif; ?>
       </div>
    </div>
-   <h6 class="toggle-trigger"><a href="#">Your closed bets (0)</a></h6>
+   <h6 class="toggle-trigger"><a href="#">Your closed bets (<?php echo count($closedBet) ?>)</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($closedBet) < 1): ?>
          <p>
             You don't have any closed bet.
          </p>
+        <?php else : ?> 
+            <?php foreach($closedBet as $bet): ?>       
+             <p>
+             <?php echo $bet->getAgree() == 0 ? 'Disagree on ' : 'Agree on ' ?>
+                "<a href="<?php echo $this->getUrl('article/index/item?id=' . $bet->getArticleId()) ?>"><?php echo Mage::getModel('article/article')->load($bet->getArticleId())->getTitle() ?></a>"
+              for <?php echo $bet->getAgree() == 0 ? $bet->getDisagree() : $bet->getAgree() ?> (Weighted: <?php echo $bet->getAgreeWeight() == 0 ? $bet->getDisagreeWeight() : $bet->getAgreeWeight() ?>).
+             </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
       </div>
    </div>
    <br />
+   <?php 
+        $logs = Mage::getModel('article/log')->getCollection()
+                    ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->load();
+   ?>
    <h4 class="line-divider">Your transactions</h4>
    <h6 class="toggle-trigger"><a href="#">Your most recent transactions</a></h6>
    <div class="toggle-container" style="display: none;">
       <div class="block">
+         <?php if(count($logs) < 1): ?>
          You don't have any transactions yet.
+         <?php else : ?>
+            <table>
+                <tbody>
+                    <tr>
+        				<th>Time</th>
+        				<th>Amount</th>
+        				<th>Description</th>
+        			</tr>
+                    <?php foreach ($logs as $log): ?>
+                    <tr>
+            			<td><?php echo Date('M. d, Y H:i', strtotime($log->getCreatedDate())) ?></td>
+            			<td><?php echo $log->getAmount() ?></td>
+            			<td><?php echo $log->getLog() ?></td>
+            		</tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+         <?php endif; ?>
       </div>
    </div>
 </div>
