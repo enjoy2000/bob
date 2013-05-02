@@ -1,5 +1,5 @@
 <?php
-class Blog_User_Block_Posts extends Mage_Catalog_Block_Product_List
+class Bob_Article_Block_Toolbar extends Mage_Catalog_Block_Product_List
 {
     protected function _beforeToHtml()
     {

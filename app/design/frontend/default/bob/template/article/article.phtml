@@ -8,13 +8,13 @@
 	<li<?php if($this->getRequest()->getParam('status') == 'closed'){echo ' class="active"';} ?>><a href="?status=closed&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>"">Closed</a></li>
 	
 </ul>
-
+<?php $categories = Mage::getModel('article/category')->getCollection()->load(); ?>
 <ul class="filter">
 	<li>Category:</li>
     <li<?php if(!$this->getRequest()->getParam('category')){ echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>">All</a></li>
-    <?php foreach($this->getData('categories') as $k => $v): ?>
-    <li<?php if($this->getRequest()->getParam('category') == $v['name']){echo ' class="active"';} ?>><a href="?status=<?php if($this->getRequest()->getParam('status')){echo $this->getRequest()->getParam('status');}else{echo 'available';} ?>&category=<?php echo $v['name'] ?>&order=<?php if($this->getRequest()->getParam('order')){ echo $this->getRequest()->getParam('order');}else{echo 'total_bets';} ?>">
-    <?php echo $v['name'] ?></a></li>
+    <?php foreach($categories as $cat): ?>
+    <li<?php if($this->getRequest()->getParam('category') == $cat->getName()){echo ' class="active"';} ?>><a href="?status=<?php if($this->getRequest()->getParam('status')){echo $this->getRequest()->getParam('status');}else{echo 'available';} ?>&category=<?php echo $cat->getName() ?>&order=<?php if($this->getRequest()->getParam('order')){ echo $this->getRequest()->getParam('order');}else{echo 'total_bets';} ?>">
+    <?php echo $cat->getName() ?></a></li>
     <?php endforeach; ?>
 </ul>
 
@@ -38,7 +38,7 @@
 <h6 class="line-divider">Available statements in all categories</h6>
 
 <?php 
-        foreach ($this->getData('articles') as $article): ?>
+        foreach ($this->getCollection() as $article): ?>
 <div class="filter">
     <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><h6><?php echo $article->getTitle() ?></h6></a>
     <li class="agree"><?php echo $article->getAgree() ?></li>

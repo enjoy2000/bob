@@ -5,8 +5,45 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
     public function __construct()
     {
         parent::__construct();
-        $collection = Mage::getModel('article/article')->getCollection();
-        $this->setCollection($collection);
+        $request = $this->getRequest();        
+        
+        $articles = Mage::getModel('article/article')->getCollection();  
+        if(!$request->getParam('order')){
+            $articles->setOrder('total_bets', 'DESC');
+        }
+        else{
+            if(substr($request->getParam('order'), 0, 1) == '-'){
+                $order = substr($request->getParam('order'), 1);
+                $articles->setOrder($order, 'ASC');
+            }
+            else{
+                $articles->setOrder($request->getParam('order'), 'DESC');
+            }
+        }
+        if($_GET){
+            if($request->getParam('category')){
+                $articles->addFieldToFilter('category', $request->getParam('category'));
+                if(!$request->getParam('status')){
+                    $articles->addFieldToFilter('status', 'available');
+                }
+                else{
+                    $articles->addFieldToFilter('status'  , $request->getParam('status')); 
+                }       
+                $articles->load();
+            }
+            else{
+                if(!$request->getParam('status')){
+                    $articles->addFieldToFilter('status', 'available');
+                }
+                else{
+                    $articles->addFieldToFilter('status'  , $request->getParam('status')); 
+                }          
+                $articles->load();
+            }            
+        }else{
+            $articles->addFieldToFilter('status', 'available')->load();
+        }
+        $this->setCollection($articles);
     }
  
     protected function _prepareLayout()
