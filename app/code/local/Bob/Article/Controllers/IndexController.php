@@ -101,7 +101,8 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                         $bet->setDisagreeWeight($timeweight*$form['betAmount']);
                     }
                     else{
-                        Mage::throwException('You have to choose side to bet.');
+                        Mage::getSingleton('core/session')->addError(Mage::helper('article')->__('You have to choose side to bet.'));
+                        $this->_redirect('*/*/new');
                     }
                     
                     $article->setTitle($form['title'])
@@ -250,10 +251,9 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     {
         $this->loadLayout();
         $this->renderLayout();
-        $conf_merchantAccountNumber = "U0832731";
+        $conf_merchantAccountNumber = Mage::getSingleton('customer/session')->getCustomer()->getLraccount();
         $conf_merchantStoreName = "bob-sci";
         $conf_merchantSecurityWord = "Frogface101@";
-        $conf_merchantEmail = "enjoy3013@gmail.com";
         
         $str = 
           $_REQUEST["lr_paidto"].":".
@@ -284,21 +284,29 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
             $_REQUEST["lr_encrypted"] == $hash) {
         
             $customer = Mage::getSingleton('customer/session')->getCustomer();
-            $customer->setBalance($customer->getBalance() + $_REQUEST('lr_amnt'));
+            $customer->setBalance($customer->getBalance() + $_REQUEST['lr_amnt'])->save();
             $log = Mage::getModel('article/log');
             $log->setCustomerId($customer->getId())
-                ->setAmount($_REQUEST('lr_amnt'))
+                ->setAmount($_REQUEST['lr_amnt'])
                 ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
-                ->setLog('Deposit from LibertyReserve')
+                ->setLog('Deposit from Liberty Reserve')
                 ->save();
             Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Payment was verified and is successful.'));
             $this->_reidrect('customer/account/');
         }
     }
     
-    public function successAction(){
+    public function successAction(){    	
     	$this->loadLayout();
-        $this->renderLayout();       
+        $this->renderLayout();   
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $customer->setBalance($customer->getBalance() + $this->getRequest()->getPost('lr_amnt'))->save(); 
+        $log = Mage::getModel('article/log');
+        $log->setCustomerId($customer->getId())
+            ->setAmount($_REQUEST['lr_amnt'])
+            ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
+            ->setLog('Deposit from Liberty Reserve')
+            ->save();  
     }
     
     public function searchAction(){
