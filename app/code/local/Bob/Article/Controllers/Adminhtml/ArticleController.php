@@ -183,7 +183,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
             try {
                 $articleModel = Mage::getModel('article/article');
                
-                $articleModel->setArticleId($this->getRequest()->getParam('id'))
+                $articleModel->setId($this->getRequest()->getParam('id'))
                     ->delete();
                    
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));

@@ -74,4 +74,20 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
     	$this->getCollection()->setCurPage($this->getRequest()->getQuery('5'))->load();
     	return $this;
     }
+    
+    public function deleteAction()
+    {
+    	if($this->getRequest()->getParam('id') > 0){
+    		try{
+    			$model = Mage::getModel('article/article');
+    			$model->setId($this->getRequest()->getParam('id'))->delete();
+    			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
+    			$this->_redirect('*/*/');
+    		}catch(Exception $e){
+    			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+    			$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+    		}
+    	}
+    	$this->_redirect('*/*/');
+    }
 }
