@@ -5,9 +5,10 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
     public function __construct()
     {
         parent::__construct();
-        $request = $this->getRequest();        
-        
-        $articles = Mage::getModel('article/article')->getCollection();  
+        $request = $this->getRequest();
+        $articles = Mage::getModel('article/article')->getCollection();
+        $articles->setPageSize(5);
+        $articles->setCurPage($request->getQuery('5'));  
         if(!$request->getParam('order')){
             $articles->setOrder('total_bets', 'DESC');
         }
@@ -51,8 +52,12 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
         parent::_prepareLayout();
  
         $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
-        $pager->setAvailableLimit(array(5=>5,10=>10,20=>20,'all'=>'all'));
+        $pager->setPageVarName(5);
+        $pager->setShowPerPage(5);
+        $pager->setLimit(5);
+        $pager->setLimitVarName(5);
         $pager->setCollection($this->getCollection());
+        $pager->canShowNextJump();
         $this->setChild('pager', $pager);
         $this->getCollection()->load();
         return $this;
@@ -61,5 +66,12 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
     public function getPagerHtml()
     {
         return $this->getChildHtml('pager');
+    }
+    
+    protected function _beforeToHtml()
+    {
+    	parent::_beforeToHtml();
+    	$this->getCollection()->setCurPage($this->getRequest()->getQuery('5'))->load();
+    	return $this;
     }
 }

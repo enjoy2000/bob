@@ -40,12 +40,20 @@
 <?php 
         foreach ($this->getCollection() as $article): ?>
 <div class="filter">
-    <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>"><h6><?php echo $article->getTitle() ?></h6></a>
-    <li class="agree"><?php echo $article->getAgree() ?></li>
-	<li class="disagree"><?php echo $article->getDisagree() ?></li>    
-    <li class="active"><?php echo Mage::helper('article')->timeCountdown($article->getDeadlineTime(), $article->getStatus())   ?>
+    <a href="<?php echo $this->getUrl('article/index/item?id=' . $article->getArticleId()) ?>">
+    	<h6>
+    		<?php echo $article->getTitle() ?>
+    	</h6>
+    </a>
+    <li class="agree">
+    	<?php echo $article->getAgree() ?>
+    </li>
+	<li class="disagree">
+		<?php echo $article->getDisagree() ?>
+	</li>    
+    <li class="active">
+    	<?php echo Mage::helper('article')->timeCountdown($article->getDeadlineTime(), $article->getStatus())   ?>
     </li>
  </div>
 <?php endforeach; ?>
 <?php echo $this->getPagerHtml(); ?>
-<?php echo $this->getToolbarHtml() ?>
