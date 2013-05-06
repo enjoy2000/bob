@@ -210,7 +210,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                             ->setLog($log_txt)
                             ->save();
                         
-                        $article->setAgree($article->getAgree() + $this->getRequest()->getPost('amount'))
+                        $item->setAgree($article->getAgree() + $this->getRequest()->getPost('amount'))
                                 ->setAgreeWeight($article->getAgreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
                                 ->save();
                         
@@ -235,7 +235,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
                             ->setLog($log_txt)
                             ->save();
                         
-                        $article->setDisagree($article->getDisagree() + $this->getRequest()->getPost('amount'))
+                        $item->setDisagree($article->getDisagree() + $this->getRequest()->getPost('amount'))
                                 ->setDisagreeWeight($article->getDisagreeWeight()+ Mage::helper('article')->getTimeWeight($item->getDeadlineTime()) * $this->getRequest()->getPost('amount'))
                                 ->save();
                         Mage::getSingleton('core/session')->addSuccess(Mage::helper('article')->__('Your bet has successly submitted.'));

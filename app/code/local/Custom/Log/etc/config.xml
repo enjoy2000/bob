@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+         <Custom_Log>
+            <version>0.0.1</version>
+        </Custom_Log>
+    </modules>
+    <frontend>
+ <!-- [+] Disable logging -->
+   <events>
+            <controller_action_predispatch><!--disabling this will 'kill' the product compare-->
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </controller_action_predispatch>
+            <controller_action_postdispatch><!--disabling this will 'kill' the product compare-->
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </controller_action_postdispatch>
+            <customer_login>
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </customer_login>
+            <customer_logout>
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </customer_logout>
+            <sales_quote_save_after>
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </sales_quote_save_after>
+            <checkout_quote_destroy>
+                <observers>
+                    <log>
+                        <type>disabled</type>
+                    </log>
+                </observers>
+            </checkout_quote_destroy>
+        </events>
+   <!-- [-] Disable logging -->
+    </frontend>
+</config>

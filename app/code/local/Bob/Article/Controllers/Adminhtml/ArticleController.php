@@ -70,7 +70,7 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                         else{
                             $article = Mage::getModel('article/article')->load($this->getRequest()->getParam('id'));
                             if($this->getRequest()->getPost('decision') == 0){
-                                $bets = Mage::getModel('article/bet')->getCollection()
+                                $disagree_bets = Mage::getModel('article/bet')->getCollection()
                                     ->addFieldToFilter('article_id', $this->getRequest()->getParam('id'))
                                     ->addFieldToFilter('status', '1')
                                     ->addFieldToFilter('disagree', array(
@@ -84,40 +84,39 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                 
                                 $log = Mage::getModel('article/log');
                                 $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
-                                $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
+                                $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in betting</a>';
                                 $log->setCustomerId($submitter->getId())
                                     ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                                     ->setAmount($article->getAgree()*0.05)
                                     ->setLog($log_txt)
                                     ->save();
                                     
-                                foreach($bets as $bet){
+                                foreach($disagree_bets as $bet){
                                     $percentBet = $bet->getDisagree()/$article->getDisagree();
                                     $percentWeight = $bet->getDisagreeWeight()/$article->getDisagreeWeight();
                                     $customerBet = Mage::getModel('customer/customer')->load($bet->getCustomerId());
-                                    $customerBet->setBalance($customerBet->getBalance() + ($percentBet + $percentWeight)*$article->getAgree()*0.45 )
+                                    $customerBet->setBalance($customerBet->getBalance() + ($percentBet + $percentWeight)*$article->getAgree()*0.45 + $bet->getDisagree())
                                              ->save();
-                                    $bet->setStatus('0');
-                                    $bet->save();
+                                    $bet->setStatus(0)->save();
                                     $log2 = Mage::getModel('article/log'); 
-	                                $log2->setCustomerId($bet->getCustomerId())
+	                                $log2->setCustomerId($customerBet->getId())
 	                                     ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
-	                                     ->setAmount(($percentBet + $percentWeight)*$article->getAgree()*0.45)
+	                                     ->setAmount(($percentBet + $percentWeight)*$article->getAgree()*0.45 + $bet->getDisagree())
 	                                     ->setLog($log_txt2)
 	                                     ->save();
                                 }
-                                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was successly set to False.'));
+                                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('This statement was successly set to False.'));
                                 $this->_redirect('*/*/');
                             }
                             else{
-                                $bets2 = Mage::getModel('article/bet')->getCollection()
+                                $agree_bets = Mage::getModel('article/bet')->getCollection()
                                     ->addFieldToFilter('article_id', $this->getRequest()->getParam('id'))
                                     ->addFieldToFilter('status', '1')
                                     ->addFieldToFilter('agree', array(
                                             'gt' => '0'
                                     ))
                                     ->load();
-                                $amount = 0;
+                                    
                                 $submitter = Mage::getModel('customer/customer')->load($article->getUserPost());
                                 $submitter->setBalance($submitter->getBalance() + $article->getDisagree()*0.05)->save();
                                 
@@ -125,32 +124,36 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
                                 $log_txt = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Submitter</a>';
                                 $log_txt2 = '<a href="' . Mage::getUrl('article/index/item?id=' . $article->getArticleId()) . '">Win in bet</a>';
                                 $log->setCustomerId($submitter->getId())
-                                    ->setCreatedDate(date("Y-m-d H:i:s"))
+                                    ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
                                     ->setAmount($article->getDisagree()*0.05)
                                     ->setLog($log_txt)
                                     ->save();
                                     
-                                foreach($bets2 as $bet){
+                                foreach($agree_bets as $bet){
                                     $percentBet = $bet->getAgree()/$article->getAgree();
                                     $percentWeight = $bet->getAgreeWeight()/$article->getAgreeWeight();
-                                    $customer = Mage::getModel('customer/customer')->load($bet->getCustomerId());
-                                    $customer->setBalance($customer->getBalance() + ($percentBet + $percentWeight)*$article->getDisagree()*0.45 )
+                                    $customerBet = Mage::getModel('customer/customer')->load($bet->getCustomerId());
+                                    $customerBet->setBalance($customerBet->getBalance() + ($percentBet + $percentWeight)*$article->getDisagree()*0.45 + $bet->getAgree())
                                              ->save();    
-                                    $bet->setStatus('0')->save();
-                                    $amount = $amount + ($percentBet + $percentWeight)*$article->getDisagree()*0.45;
+                                    $bet->setStatus(0)->save();
+                                    $log2 = Mage::getModel('article/log'); 
+	                                $log2->setCustomerId($customerBet->getId())
+	                                    ->setCreatedDate(date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
+	                                    ->setAmount(($percentBet + $percentWeight)*$article->getDisagree()*0.45 + $bet->getAgree())
+	                                    ->setLog($log_txt2)
+	                                    ->save();
                                 }
                                 
-                                $log2 = Mage::getModel('article/log'); 
-                                $log2->setCustomerId($customer->getId())
-                                    ->setCreatedDate(date("Y-m-d H:i:s"))
-                                    ->setAmount($amount)
-                                    ->setLog($log_txt2)
-                                    ->save();
+                                
                                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('This statement was successly set to True.'));
                                 $this->_redirect('*/*/');
                             }
                         }
                     }                    
+                }
+                
+                foreach($allbets as $bet){
+                	$bet->setStatus(0)->save();
                 }
                 
                 $postData = $this->getRequest()->getPost();
@@ -313,5 +316,52 @@ class Bob_Article_Adminhtml_ArticleController extends Mage_Adminhtml_Controller_
             }
         }
         $this->_redirect('*/*/');
+    }
+    
+    public function massDelete2Action()
+    {
+    	if($this->getRequest()->getParam('id') > 0){
+    		try{
+    			$model = Mage::getModel('article/article');
+    			$model->setId($this->getRequest()->getParam('id'))->delete();
+    			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
+    			$this->_redirect('*/*/');
+    		}catch(Exception $e){
+    			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+    			$this->_redirect('*/*/', array('id' => $this->getRequest()->getParam('id')));
+    		}
+    	}
+    	$this->_redirect('*/*/');
+    }
+    
+    public function abcAction(){
+    	if($this->getRequest()->getParam('id') > 0){
+    		try{
+    			$model = Mage::getModel('article/article');
+    			$model->setId($this->getRequest()->getParam('id'))->delete();
+    			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
+    			$this->_redirect('*/*/');
+    		}catch(Exception $e){
+    			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+    			$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+    		}
+    	}
+    	$this->_redirect('*/*/');
+    }
+    
+    public function abcdAction()
+    {
+    	if($this->getRequest()->getParam('id') > 0){
+    		try{
+    			$model = Mage::getModel('article/article');
+    			$model->setId($this->getRequest()->getParam('id'))->delete();
+    			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
+    			$this->_redirect('*/*/');
+    		}catch(Exception $e){
+    			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+    			$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+    		}
+    	}
+    	$this->_redirect('*/*/');
     }
 }
