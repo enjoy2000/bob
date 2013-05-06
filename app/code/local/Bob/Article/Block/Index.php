@@ -7,8 +7,8 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
         parent::__construct();
         $request = $this->getRequest();
         $articles = Mage::getModel('article/article')->getCollection();
-        $articles->setPageSize(5);
-        $articles->setCurPage($request->getQuery('5'));  
+        $articles->setPageSize(10);
+        $articles->setCurPage($request->getQuery('10'));  
         if(!$request->getParam('order')){
             $articles->setOrder('total_bets', 'DESC');
         }
@@ -52,10 +52,10 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
         parent::_prepareLayout();
  
         $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
-        $pager->setPageVarName(5);
-        $pager->setShowPerPage(5);
-        $pager->setLimit(5);
-        $pager->setLimitVarName(5);
+        $pager->setPageVarName(10);
+        $pager->setShowPerPage(10);
+        $pager->setLimit(10);
+        $pager->setLimitVarName(10);
         $pager->setCollection($this->getCollection());
         $pager->canShowNextJump();
         $this->setChild('pager', $pager);
@@ -71,23 +71,7 @@ class Bob_Article_Block_Index extends Mage_Core_Block_Template
     protected function _beforeToHtml()
     {
     	parent::_beforeToHtml();
-    	$this->getCollection()->setCurPage($this->getRequest()->getQuery('5'))->load();
+    	$this->getCollection()->setCurPage($this->getRequest()->getQuery('10'))->load();
     	return $this;
-    }
-    
-    public function deleteAction()
-    {
-    	if($this->getRequest()->getParam('id') > 0){
-    		try{
-    			$model = Mage::getModel('article/article');
-    			$model->setId($this->getRequest()->getParam('id'))->delete();
-    			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('article')->__('Item was successly deleted.'));
-    			$this->_redirect('*/*/');
-    		}catch(Exception $e){
-    			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-    			$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-    		}
-    	}
-    	$this->_redirect('*/*/');
     }
 }

@@ -160,7 +160,7 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
         $item = Mage::getModel('article/article')->load($this->getRequest()->getParam('id')); 
                  
 		$id = $this->getRequest()->getParam('id'); 
-        if(($this->getRequest()->getParam('id') >= 1) && ($this->getRequest()->getParam('id') <= count(Mage::getModel('article/article')->getCollection()))){
+        if($this->getRequest()->getParam('id') >= 1){
             
             if(is_object($item)){
                 $this->getLayout()->getBlock('article/item')->setData('item', $item);
@@ -172,6 +172,13 @@ class Bob_Article_IndexController extends Mage_Core_Controller_Front_Action
     
     public function betAction()
     {
+    	if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $session = Mage::getSingleton('customer/session');
+            $session->setAfterAuthUrl( Mage::helper('core/url')->getCurrentUrl() );
+            $session->setBeforeAuthUrl( Mage::helper('core/url')->getCurrentUrl() );
+            $this->_redirect('customer/account/login/');
+            return $this;
+        }
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         $bet = Mage::getModel('article/bet');
         $log = Mage::getModel('article/log');
