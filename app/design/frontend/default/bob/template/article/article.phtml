@@ -1,17 +1,17 @@
     <br />
 <ul class="filter">
 	<li>Status:</li>
-	<li<?php if(!$this->getRequest()->getParam('status') || ($this->getRequest()->getParam('status') == 'available')){ echo ' class="active"';} ?>><a href="?status=available&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>">Available</a></li>
+	<li<?php if(!$this->getRequest()->getParam('status') || ($this->getRequest()->getParam('status') == 'available')){ echo ' class="active"';} ?>><a href="?status=available&category=<?php echo $this->getRequest()->getParam('category') ?>&order=<?php echo $this->getRequest()->getParam('order') ?>">Available</a></li>
 	
-	<li<?php if($this->getRequest()->getParam('status') == 'waiting'){echo ' class="active"';} ?>><a href="?status=waiting&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>"">Waiting</a></li>
+	<li<?php if($this->getRequest()->getParam('status') == 'waiting'){echo ' class="active"';} ?>><a href="?status=waiting&category=<?php echo $this->getRequest()->getParam('category') ?>&order=<?php echo $this->getRequest()->getParam('order') ?>"">Waiting</a></li>
 	
-	<li<?php if($this->getRequest()->getParam('status') == 'closed'){echo ' class="active"';} ?>><a href="?status=closed&category=<?php echo $this->getRequest()->getParam('category') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>"">Closed</a></li>
+	<li<?php if($this->getRequest()->getParam('status') == 'closed'){echo ' class="active"';} ?>><a href="?status=closed&category=<?php echo $this->getRequest()->getParam('category') ?>&order=<?php echo $this->getRequest()->getParam('order') ?>"">Closed</a></li>
 	
 </ul>
 <?php $categories = Mage::getModel('article/category')->getCollection()->load(); ?>
 <ul class="filter">
 	<li>Category:</li>
-    <li<?php if(!$this->getRequest()->getParam('category')){ echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&oder=<?php echo $this->getRequest()->getParam('order') ?>">All</a></li>
+    <li<?php if(!$this->getRequest()->getParam('category')){ echo ' class="active"';} ?>><a href="?status=<?php echo $this->getRequest()->getParam('status') ?>&order=<?php echo $this->getRequest()->getParam('order') ?>">All</a></li>
     <?php foreach($categories as $cat): ?>
     <li<?php if($this->getRequest()->getParam('category') == $cat->getName()){echo ' class="active"';} ?>><a href="?status=<?php if($this->getRequest()->getParam('status')){echo $this->getRequest()->getParam('status');}else{echo 'available';} ?>&category=<?php echo $cat->getName() ?>&order=<?php if($this->getRequest()->getParam('order')){ echo $this->getRequest()->getParam('order');}else{echo 'total_bets';} ?>">
     <?php echo $cat->getName() ?></a></li>
