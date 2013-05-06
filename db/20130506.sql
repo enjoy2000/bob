@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 06, 2013 at 02:03 AM
+-- Generation Time: May 06, 2013 at 05:17 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `admin_user` (
 --
 
 INSERT INTO `admin_user` (`user_id`, `firstname`, `lastname`, `email`, `username`, `password`, `created`, `modified`, `logdate`, `lognum`, `reload_acl_flag`, `is_active`, `extra`, `rp_token`, `rp_token_created_at`) VALUES
-(1, 'Hat', 'Dao', 'hat@toprankseo.vn', 'john', '5fc8ae0d637ee3789226d3c87700922f:YQ', '2013-05-06 01:58:15', '2013-04-10 00:26:47', '2013-05-05 18:58:15', 30, 0, 1, 'a:1:{s:11:"configState";a:19:{s:12:"dev_restrict";s:1:"0";s:9:"dev_debug";s:1:"1";s:12:"dev_template";s:1:"0";s:20:"dev_translate_inline";s:1:"0";s:7:"dev_log";s:1:"1";s:6:"dev_js";s:1:"0";s:7:"dev_css";s:1:"0";s:14:"design_package";s:1:"0";s:12:"design_theme";s:1:"1";s:11:"design_head";s:1:"0";s:13:"design_header";s:1:"0";s:13:"design_footer";s:1:"0";s:16:"design_watermark";s:1:"0";s:17:"design_pagination";s:1:"0";s:12:"design_email";s:1:"0";s:15:"general_country";s:1:"0";s:14:"general_region";s:1:"0";s:14:"general_locale";s:1:"1";s:25:"general_store_information";s:1:"1";}}', NULL, NULL);
+(1, 'Hat', 'Dao', 'hat@toprankseo.vn', 'john', '5fc8ae0d637ee3789226d3c87700922f:YQ', '2013-05-06 04:41:46', '2013-04-10 00:26:47', '2013-05-05 21:41:46', 32, 0, 1, 'a:1:{s:11:"configState";a:19:{s:12:"dev_restrict";s:1:"0";s:9:"dev_debug";s:1:"1";s:12:"dev_template";s:1:"0";s:20:"dev_translate_inline";s:1:"0";s:7:"dev_log";s:1:"1";s:6:"dev_js";s:1:"0";s:7:"dev_css";s:1:"0";s:14:"design_package";s:1:"0";s:12:"design_theme";s:1:"1";s:11:"design_head";s:1:"0";s:13:"design_header";s:1:"0";s:13:"design_footer";s:1:"0";s:16:"design_watermark";s:1:"0";s:17:"design_pagination";s:1:"0";s:12:"design_email";s:1:"0";s:15:"general_country";s:1:"0";s:14:"general_region";s:1:"0";s:14:"general_locale";s:1:"1";s:25:"general_store_information";s:1:"1";}}', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `user_post` varchar(255) NOT NULL,
   `decision` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `article`
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `article` (
 
 INSERT INTO `article` (`article_id`, `title`, `content`, `status`, `created_time`, `deadline_time`, `event_time`, `agree`, `disagree`, `agree_weight`, `disagree_weight`, `category`, `total_bets`, `user_post`, `decision`) VALUES
 (5, 'sdfsfsd', 'fsdfsdf', 'available', '2013-04-17 03:42:32', '2013-05-10 00:00:00', '2013-05-11 00:00:00', '32.20', '0.00', '0.000', '0.000', 'Science', '32.20', '1', NULL),
-(6, 'cvxvxvxcv', 'dfsfsf', 'available', '2013-04-17 03:47:30', '2013-05-09 00:00:00', '2013-05-11 00:00:00', '0.00', '0.00', '0.000', '0.000', 'Science', '0.00', '1', NULL),
+(6, 'cvxvxvxcv', 'dfsfsf', 'closed', '2013-04-17 03:47:30', '2013-05-09 00:00:00', '2013-05-11 00:00:00', '24242.00', '3232.00', '1452701.850', '193671.136', 'Science', '0.00', '1', 0),
 (7, 'manberros', 'manberros', 'waiting', '2013-04-17 10:01:24', '2013-04-30 00:00:00', '2013-05-01 00:00:00', '0.00', '23.45', '0.000', '0.000', 'Sports ', '23.45', '1', NULL),
 (8, 'vxcvxcv', 'cvxcvxcv', 'waiting', '2013-04-18 10:19:07', '2013-04-18 00:00:00', '2013-06-26 00:00:00', '23.00', '0.00', '0.000', '0.000', 'Economics', '23.00', '1', NULL),
 (9, 'dsfsfd', 'sdfsdf', 'waiting', '2013-04-18 10:20:59', '2013-04-26 00:00:00', '2013-04-29 00:00:00', '0.00', '234.00', '0.000', '0.000', 'Politics', '234.00', '1', 0),
@@ -346,7 +346,7 @@ INSERT INTO `article` (`article_id`, `title`, `content`, `status`, `created_time
 (24, 'sdfsdfsdf', 'sdfsdfsdfsdf', 'waiting', '2013-04-24 05:25:54', '2013-04-28 00:00:00', '2013-04-30 00:00:00', '1200.00', '323.22', '200.000', '29273.389', 'Technology', '1523.22', '1', 0),
 (29, 'hjkhkh', 'khjkjhk', 'waiting', '2013-04-26 03:52:22', '2013-04-28 00:00:00', '2013-04-30 00:00:00', '0.01', '0.00', '0.441', '0.000', 'Politics', '0.01', '1', NULL),
 (30, 'jkhkhkjhk', 'hjkhjkjhk', 'waiting', '2013-04-26 03:53:38', '2013-04-28 00:00:00', '2013-04-30 00:00:00', '12.00', '0.00', '529.272', '0.000', 'Science2', '12.00', '1', NULL),
-(31, 'hthth', 'ththth', 'available', '2013-04-26 03:53:59', '2013-05-28 00:00:00', '2013-04-30 00:00:00', '0.00', '441.00', '0.000', '336968.100', 'Science2', '441.00', '1', NULL);
+(31, 'hthth', 'ththth', 'closed', '2013-04-26 03:53:59', '2013-05-28 00:00:00', '2013-04-30 00:00:00', '45242.00', '441.00', '543540.000', '336968.100', 'Science2', '441.00', '1', 0);
 
 -- --------------------------------------------------------
 
@@ -355,7 +355,7 @@ INSERT INTO `article` (`article_id`, `title`, `content`, `status`, `created_time
 --
 
 CREATE TABLE IF NOT EXISTS `article_bet` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bet_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `article_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
@@ -364,18 +364,18 @@ CREATE TABLE IF NOT EXISTS `article_bet` (
   `disagree` decimal(11,2) DEFAULT '0.00',
   `agree_weight` decimal(11,3) DEFAULT '0.000',
   `disagree_weight` decimal(11,3) DEFAULT '0.000',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`bet_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `article_bet`
 --
 
-INSERT INTO `article_bet` (`id`, `customer_id`, `article_id`, `status`, `bet_date`, `agree`, `disagree`, `agree_weight`, `disagree_weight`) VALUES
-(1, 1, 24, 1, '2013-04-26 03:37:14', '0.00', '323.21', '0.000', '14343.737'),
-(2, 1, 29, 1, '2013-04-26 03:52:23', '0.01', '0.00', '0.441', '0.000'),
-(3, 1, 30, 1, '2013-04-26 03:53:39', '12.00', '0.00', '529.272', '0.000'),
-(4, 1, 31, 1, '2013-04-26 03:53:59', '0.00', '441.00', '0.000', '336968.100');
+INSERT INTO `article_bet` (`bet_id`, `customer_id`, `article_id`, `status`, `bet_date`, `agree`, `disagree`, `agree_weight`, `disagree_weight`) VALUES
+(1, 1, 31, 1, '2013-05-06 09:16:33', '141.00', '0.00', '73140.084', '0.000'),
+(2, 1, 31, 0, '2013-05-06 09:16:39', '233232.00', '212.00', '5353533.000', '109969.276'),
+(3, 1, 6, 0, '2013-05-06 12:04:30', '24242.00', '0.00', '1452701.850', '0.000'),
+(4, 1, 6, 0, '2013-05-06 12:04:36', '0.00', '3232.00', '0.000', '193671.136');
 
 -- --------------------------------------------------------
 
@@ -415,43 +415,36 @@ CREATE TABLE IF NOT EXISTS `article_log` (
   `created_date` datetime NOT NULL,
   `log` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=250 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `article_log`
 --
 
 INSERT INTO `article_log` (`id`, `customer_id`, `amount`, `created_date`, `log`) VALUES
-(1, 1, -1.00, '2013-04-26 03:17:20', 'Withdraw'),
-(2, 1, -323.21, '2013-04-26 03:37:14', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Bet</a>'),
-(3, 1, -0.01, '2013-04-26 03:52:23', '<a href="http://my.local/bob/index.php/article/index/item?id=29/">Bet</a>'),
-(4, 1, -12.00, '2013-04-26 03:53:39', '<a href="http://my.local/bob/index.php/article/index/item?id=30/">Bet</a>'),
-(5, 1, -0.01, '2013-04-26 03:53:39', '<a href="http://my.local/bob/index.php/article/index/item?id=30/">Submission Fee</a>'),
-(6, 1, -441.00, '2013-04-26 03:53:59', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Bet</a>'),
-(7, 1, -0.01, '2013-04-26 03:53:59', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submission Fee</a>'),
-(227, 1, 0.00, '2013-04-26 04:56:54', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(228, 1, 0.00, '2013-04-26 04:58:31', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(229, 1, 10.00, '2013-04-26 04:59:12', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(230, 1, 10.00, '2013-04-26 05:05:05', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(231, 1, 10.00, '2013-04-26 05:39:04', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(232, 1, 10.00, '2013-04-26 05:41:01', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(233, 1, 10.00, '2013-04-26 05:42:29', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(234, 1, 10.00, '2013-04-26 05:43:55', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(235, 1, 10.00, '2013-04-26 05:45:18', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(236, 1, 10.00, '2013-04-26 08:13:03', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(237, 1, 10.00, '2013-04-26 08:13:23', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(238, 1, 10.00, '2013-04-26 08:17:59', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(239, 1, 10.00, '2013-04-26 08:18:04', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(240, 1, 10.00, '2013-04-26 08:23:26', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(241, 1, 10.00, '2013-04-26 08:27:08', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(242, 1, 60.00, '2013-04-26 08:27:57', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(243, 1, 60.00, '2013-04-26 15:32:26', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(244, 1, 60.00, '2013-04-26 15:41:44', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(245, 1, 60.00, '2013-04-26 15:53:16', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(246, 1, 1.00, '2013-05-02 09:17:57', 'Deposit from LibertyReserve'),
-(247, 1, 60.00, '2013-05-03 12:28:37', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(248, 1, 60.00, '2013-05-06 09:00:10', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
-(249, 1, 60.00, '2013-05-06 09:03:02', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>');
+(1, 1, 60.00, '2013-05-06 09:05:01', '<a href="http://my.local/bob/index.php/article/index/item?id=24/">Submitter</a>'),
+(2, 1, -141.00, '2013-05-06 09:16:33', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Bet</a>'),
+(3, 1, -212.00, '2013-05-06 09:16:39', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Bet</a>'),
+(4, 1, 0.00, '2013-05-06 09:17:52', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(5, 1, 0.00, '2013-05-06 09:22:39', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(6, 1, 0.00, '2013-05-06 10:01:29', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(7, 1, 0.00, '2013-05-06 10:01:34', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(8, 1, 0.00, '2013-05-06 10:10:54', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(9, 1, 0.00, '2013-05-06 10:13:48', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(10, 1, 0.00, '2013-05-06 10:13:55', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(11, 1, 0.00, '2013-05-06 10:17:21', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(12, 1, 0.00, '2013-05-06 10:19:12', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(13, 1, 0.00, '2013-05-06 11:42:04', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(14, 1, 0.00, '2013-05-06 11:42:40', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(15, 1, 2262.10, '2013-05-06 11:44:06', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(16, 1, 2262.10, '2013-05-06 11:45:40', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(17, 1, 2262.10, '2013-05-06 11:45:42', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(18, 1, 2262.10, '2013-05-06 11:46:32', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Submitter</a>'),
+(19, 1, 16431.16, '2013-05-06 11:46:32', '<a href="http://my.local/bob/index.php/article/index/item?id=31/">Win in bet</a>'),
+(20, 1, -24242.00, '2013-05-06 12:04:30', '<a href="http://my.local/bob/index.php/article/index/item?id=6/">Bet</a>'),
+(21, 1, -3232.00, '2013-05-06 12:04:37', '<a href="http://my.local/bob/index.php/article/index/item?id=6/">Bet</a>'),
+(22, 1, 1212.10, '2013-05-06 12:08:12', '<a href="http://my.local/bob/index.php/article/index/item?id=6/">Submitter</a>'),
+(23, 1, 25049.80, '2013-05-06 12:08:13', '<a href="http://my.local/bob/index.php/article/index/item?id=6/">Win in betting</a>');
 
 -- --------------------------------------------------------
 
@@ -3396,7 +3389,7 @@ CREATE TABLE IF NOT EXISTS `customer_entity` (
 --
 
 INSERT INTO `customer_entity` (`entity_id`, `entity_type_id`, `attribute_set_id`, `website_id`, `email`, `group_id`, `increment_id`, `store_id`, `created_at`, `updated_at`, `is_active`, `disable_auto_group_change`) VALUES
-(1, 1, 0, 1, 'enjoy3013@gmail.com', 1, NULL, 1, '2013-04-11 21:53:41', '2013-05-05 19:03:02', 1, 0),
+(1, 1, 0, 1, 'enjoy3013@gmail.com', 1, NULL, 1, '2013-04-11 21:53:41', '2013-05-05 22:08:13', 1, 0),
 (2, 1, 0, 1, 'enjoy.harpyhunter@yahoo.com', 1, NULL, 1, '2013-04-19 00:42:07', '2013-04-19 00:42:08', 1, 0);
 
 -- --------------------------------------------------------
@@ -3437,14 +3430,14 @@ CREATE TABLE IF NOT EXISTS `customer_entity_decimal` (
   KEY `IDX_CUSTOMER_ENTITY_DECIMAL_ATTRIBUTE_ID` (`attribute_id`),
   KEY `IDX_CUSTOMER_ENTITY_DECIMAL_ENTITY_ID` (`entity_id`),
   KEY `IDX_CUSTOMER_ENTITY_DECIMAL_ENTITY_ID_ATTRIBUTE_ID_VALUE` (`entity_id`,`attribute_id`,`value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Customer Entity Decimal' AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Customer Entity Decimal' AUTO_INCREMENT=93 ;
 
 --
 -- Dumping data for table `customer_entity_decimal`
 --
 
 INSERT INTO `customer_entity_decimal` (`value_id`, `entity_type_id`, `attribute_id`, `entity_id`, `value`) VALUES
-(50, 1, 136, 1, '94940.4024');
+(50, 1, 136, 1, '169012.9056');
 
 -- --------------------------------------------------------
 
@@ -6233,7 +6226,14 @@ CREATE TABLE IF NOT EXISTS `log_customer` (
   `store_id` smallint(5) unsigned NOT NULL COMMENT 'Store ID',
   PRIMARY KEY (`log_id`),
   KEY `IDX_LOG_CUSTOMER_VISITOR_ID` (`visitor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Log Customers Table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Log Customers Table' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `log_customer`
+--
+
+INSERT INTO `log_customer` (`log_id`, `visitor_id`, `customer_id`, `login_at`, `logout_at`, `store_id`) VALUES
+(1, 69, 1, '2013-05-05 19:15:55', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -6293,6 +6293,145 @@ CREATE TABLE IF NOT EXISTS `log_url` (
   KEY `IDX_LOG_URL_VISITOR_ID` (`visitor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Log URL Table';
 
+--
+-- Dumping data for table `log_url`
+--
+
+INSERT INTO `log_url` (`url_id`, `visitor_id`, `visit_time`) VALUES
+(1, 69, '2013-05-05 19:07:27'),
+(2, 69, '2013-05-05 19:07:28'),
+(3, 69, '2013-05-05 19:07:31'),
+(4, 69, '2013-05-05 19:07:33'),
+(5, 69, '2013-05-05 19:07:38'),
+(6, 69, '2013-05-05 19:07:40'),
+(7, 69, '2013-05-05 19:07:44'),
+(8, 69, '2013-05-05 19:07:46'),
+(9, 69, '2013-05-05 19:07:48'),
+(10, 69, '2013-05-05 19:07:50'),
+(11, 69, '2013-05-05 19:07:51'),
+(12, 69, '2013-05-05 19:07:52'),
+(13, 69, '2013-05-05 19:07:56'),
+(14, 69, '2013-05-05 19:07:58'),
+(15, 69, '2013-05-05 19:08:00'),
+(16, 69, '2013-05-05 19:08:01'),
+(17, 69, '2013-05-05 19:08:02'),
+(18, 69, '2013-05-05 19:08:03'),
+(19, 69, '2013-05-05 19:08:04'),
+(20, 69, '2013-05-05 19:08:06'),
+(21, 69, '2013-05-05 19:08:07'),
+(22, 69, '2013-05-05 19:08:08'),
+(23, 69, '2013-05-05 19:08:10'),
+(24, 69, '2013-05-05 19:11:02'),
+(25, 69, '2013-05-05 19:11:04'),
+(26, 69, '2013-05-05 19:11:14'),
+(27, 69, '2013-05-05 19:11:15'),
+(28, 69, '2013-05-05 19:11:17'),
+(29, 69, '2013-05-05 19:11:19'),
+(30, 69, '2013-05-05 19:13:20'),
+(31, 69, '2013-05-05 19:13:28'),
+(32, 69, '2013-05-05 19:13:28'),
+(33, 69, '2013-05-05 19:13:29'),
+(34, 69, '2013-05-05 19:13:35'),
+(35, 69, '2013-05-05 19:13:41'),
+(36, 69, '2013-05-05 19:14:06'),
+(37, 69, '2013-05-05 19:14:07'),
+(38, 69, '2013-05-05 19:14:16'),
+(39, 69, '2013-05-05 19:14:21'),
+(40, 69, '2013-05-05 19:15:18'),
+(41, 69, '2013-05-05 19:15:19'),
+(42, 69, '2013-05-05 19:15:21'),
+(43, 69, '2013-05-05 19:15:22'),
+(44, 69, '2013-05-05 19:15:25'),
+(45, 69, '2013-05-05 19:15:26'),
+(46, 69, '2013-05-05 19:15:28'),
+(47, 69, '2013-05-05 19:15:29'),
+(48, 69, '2013-05-05 19:15:39'),
+(49, 69, '2013-05-05 19:15:40'),
+(50, 69, '2013-05-05 19:15:41'),
+(51, 69, '2013-05-05 19:15:42'),
+(52, 69, '2013-05-05 19:15:47'),
+(53, 69, '2013-05-05 19:15:52'),
+(54, 69, '2013-05-05 19:15:52'),
+(55, 69, '2013-05-05 19:15:53'),
+(56, 69, '2013-05-05 19:15:55'),
+(57, 69, '2013-05-05 19:15:57'),
+(58, 69, '2013-05-05 19:16:00'),
+(59, 69, '2013-05-05 19:16:19'),
+(60, 69, '2013-05-05 19:16:21'),
+(61, 69, '2013-05-05 19:16:22'),
+(62, 69, '2013-05-05 19:16:23'),
+(63, 69, '2013-05-05 19:16:33'),
+(64, 69, '2013-05-05 19:16:34'),
+(65, 69, '2013-05-05 19:16:36'),
+(66, 69, '2013-05-05 19:16:39'),
+(67, 69, '2013-05-05 19:16:40'),
+(68, 69, '2013-05-05 19:16:42'),
+(69, 69, '2013-05-05 19:23:20'),
+(70, 69, '2013-05-05 19:23:22'),
+(71, 69, '2013-05-05 19:23:33'),
+(72, 69, '2013-05-05 19:23:38'),
+(73, 69, '2013-05-05 19:23:53'),
+(74, 69, '2013-05-05 19:23:55'),
+(75, 69, '2013-05-05 19:24:07'),
+(76, 69, '2013-05-05 19:24:08'),
+(77, 69, '2013-05-05 19:24:13'),
+(78, 69, '2013-05-05 19:24:14'),
+(79, 69, '2013-05-05 19:24:15'),
+(80, 69, '2013-05-05 19:24:16'),
+(81, 69, '2013-05-05 19:24:24'),
+(82, 69, '2013-05-05 19:24:26'),
+(83, 69, '2013-05-05 19:38:37'),
+(84, 69, '2013-05-05 19:38:39'),
+(85, 69, '2013-05-05 19:38:40'),
+(86, 69, '2013-05-05 19:38:42'),
+(87, 69, '2013-05-05 19:38:46'),
+(88, 69, '2013-05-05 19:38:48'),
+(89, 69, '2013-05-05 19:38:49'),
+(90, 69, '2013-05-05 19:38:51'),
+(91, 69, '2013-05-05 19:38:52'),
+(92, 69, '2013-05-05 19:38:53'),
+(93, 69, '2013-05-05 19:38:54'),
+(94, 69, '2013-05-05 19:38:56'),
+(95, 69, '2013-05-05 19:38:57'),
+(96, 69, '2013-05-05 19:38:59'),
+(97, 69, '2013-05-05 19:39:01'),
+(98, 69, '2013-05-05 19:39:03'),
+(99, 69, '2013-05-05 19:39:04'),
+(100, 69, '2013-05-05 19:39:06'),
+(101, 69, '2013-05-05 19:39:11'),
+(102, 69, '2013-05-05 19:39:13'),
+(103, 69, '2013-05-05 19:39:13'),
+(104, 69, '2013-05-05 19:39:16'),
+(105, 69, '2013-05-05 19:39:24'),
+(106, 69, '2013-05-05 19:39:26'),
+(107, 69, '2013-05-05 19:39:28'),
+(108, 69, '2013-05-05 19:39:30'),
+(109, 69, '2013-05-05 19:40:21'),
+(110, 69, '2013-05-05 19:40:22'),
+(111, 69, '2013-05-05 19:40:23'),
+(112, 69, '2013-05-05 19:40:25'),
+(113, 69, '2013-05-05 19:40:46'),
+(114, 69, '2013-05-05 19:40:47'),
+(115, 69, '2013-05-05 19:40:50'),
+(116, 69, '2013-05-05 19:40:52'),
+(117, 69, '2013-05-05 19:40:52'),
+(118, 69, '2013-05-05 19:40:54'),
+(119, 69, '2013-05-05 19:40:56'),
+(120, 69, '2013-05-05 19:40:57'),
+(121, 69, '2013-05-05 19:41:23'),
+(122, 69, '2013-05-05 19:41:24'),
+(123, 69, '2013-05-05 19:41:25'),
+(124, 69, '2013-05-05 19:41:26'),
+(125, 69, '2013-05-05 19:41:27'),
+(126, 69, '2013-05-05 19:41:28'),
+(127, 69, '2013-05-05 19:41:29'),
+(128, 69, '2013-05-05 19:41:31'),
+(129, 69, '2013-05-05 19:41:33'),
+(130, 69, '2013-05-05 19:41:33'),
+(131, 69, '2013-05-05 19:41:35'),
+(132, 69, '2013-05-05 19:42:12'),
+(133, 69, '2013-05-05 19:42:18');
+
 -- --------------------------------------------------------
 
 --
@@ -6304,7 +6443,146 @@ CREATE TABLE IF NOT EXISTS `log_url_info` (
   `url` varchar(255) DEFAULT NULL COMMENT 'URL',
   `referer` varchar(255) DEFAULT NULL COMMENT 'Referrer',
   PRIMARY KEY (`url_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Log URL Info Table' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Log URL Info Table' AUTO_INCREMENT=134 ;
+
+--
+-- Dumping data for table `log_url_info`
+--
+
+INSERT INTO `log_url_info` (`url_id`, `url`, `referer`) VALUES
+(1, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(2, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(3, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index'),
+(4, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(5, 'http://my.local/bob/index.php/article/index/item?id=7/', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(6, 'http://my.local/bob/index.php/article/index/item?id=7/', 'http://my.local/bob/index.php/article/index/item?id=7/'),
+(7, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index'),
+(8, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(9, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(10, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(11, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(12, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(13, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(14, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(15, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(16, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(17, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(18, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(19, 'http://my.local/bob/index.php/article/index/item?id=5/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(20, 'http://my.local/bob/skin/frontend/default/bob/img/knobs-icons/Knob%20Download.png', 'http://my.local/bob/index.php/article/index/item?id=5/'),
+(21, 'http://my.local/bob/index.php/article/index/item?id=5/', 'http://my.local/bob/index.php/article/index/item?id=5/'),
+(22, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(23, 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(24, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(25, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(26, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(27, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/customer/account/login/'),
+(28, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(29, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(30, 'http://my.local/bob/', 'http://my.local/bob/index.php/article/index/index?status=available&category=&oder='),
+(31, 'http://my.local/bob/', 'http://my.local/bob/'),
+(32, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/'),
+(33, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(34, 'http://my.local/bob/', 'http://my.local/bob/index.php/article/index/index'),
+(35, 'http://my.local/bob/', 'http://my.local/bob/'),
+(36, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/'),
+(37, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(38, 'http://my.local/bob/', 'http://my.local/bob/index.php/article/index/index'),
+(39, 'http://my.local/bob/', 'http://my.local/bob/'),
+(40, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/'),
+(41, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(42, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index'),
+(43, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(44, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(45, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/customer/account/login/'),
+(46, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index'),
+(47, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(48, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index'),
+(49, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(50, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index'),
+(51, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(52, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(53, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/'),
+(54, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/'),
+(55, 'http://my.local/bob/index.php/customer/account/login/', 'http://my.local/bob/index.php/customer/account/login/'),
+(56, 'http://my.local/bob/index.php/customer/account/loginPost/', 'http://my.local/bob/index.php/customer/account/login/'),
+(57, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/customer/account/login/'),
+(58, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/customer/account/'),
+(59, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/customer/account/'),
+(60, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(61, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/index'),
+(62, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(63, 'http://my.local/bob/index.php/article/index/bet/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(64, 'http://my.local/bob/index.php/article/index/item/id/31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(65, 'http://my.local/bob/index.php/article/index/item/id/31/', 'http://my.local/bob/index.php/article/index/item/id/31/'),
+(66, 'http://my.local/bob/index.php/article/index/bet/', 'http://my.local/bob/index.php/article/index/item/id/31/'),
+(67, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item/id/31/'),
+(68, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(69, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item/id/31/'),
+(70, 'http://my.local/bob/index.php/article/index/item?id=31/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(71, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/article/index/item?id=31/'),
+(72, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/'),
+(73, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/'),
+(74, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/customer/account/'),
+(75, 'http://my.local/bob/index.php/customer/account/edit/changepass/1/', 'http://my.local/bob/index.php/customer/account/'),
+(76, 'http://my.local/bob/index.php/customer/account/edit/changepass/1/', 'http://my.local/bob/index.php/customer/account/edit/changepass/1/'),
+(77, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/'),
+(78, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/customer/account/'),
+(79, 'http://my.local/bob/index.php/customer/account/edit/', 'http://my.local/bob/index.php/customer/account/'),
+(80, 'http://my.local/bob/index.php/customer/account/edit/', 'http://my.local/bob/index.php/customer/account/edit/'),
+(81, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/'),
+(82, 'http://my.local/bob/index.php/customer/account/', 'http://my.local/bob/index.php/customer/account/'),
+(83, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/customer/account/'),
+(84, 'http://my.local/bob/index.php/article/index/index', 'http://my.local/bob/index.php/article/index/index'),
+(85, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index'),
+(86, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(87, 'http://my.local/bob/index.php/article/index/index?status=closed&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&oder='),
+(88, 'http://my.local/bob/index.php/article/index/index?status=closed&category=&oder=', 'http://my.local/bob/index.php/article/index/index?status=closed&category=&oder='),
+(89, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Science&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=&oder='),
+(90, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Science&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Science&order=total_bets'),
+(91, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Technology&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Science&order=total_bets'),
+(92, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Technology&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Technology&order=total_bets'),
+(93, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Politics&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Technology&order=total_bets'),
+(94, 'http://my.local/bob/index.php/article/index/index?status=closed&category=Politics&order=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Politics&order=total_bets'),
+(95, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&oder=total_bets', 'http://my.local/bob/index.php/article/index/index?status=closed&category=Politics&order=total_bets'),
+(96, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&oder=total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&oder=total_bets'),
+(97, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&oder=total_bets'),
+(98, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&order=-total_bets'),
+(99, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=Politics&order=-total_bets'),
+(100, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(101, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(102, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(103, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(104, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(105, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(106, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(107, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(108, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(109, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(110, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(111, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(112, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(113, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(114, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(115, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(116, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder='),
+(117, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder='),
+(118, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(119, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(120, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(121, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(122, 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(123, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&oder=-total_bets'),
+(124, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(125, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(126, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=', 'http://my.local/bob/index.php/article/index/index?status=waiting&category='),
+(127, 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category='),
+(128, 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&category=&order=-total_bets'),
+(129, 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets'),
+(130, 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets'),
+(131, 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets', 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets'),
+(132, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/article/index/index?status=waiting&order=-total_bets'),
+(133, 'http://my.local/bob/index.php/', 'http://my.local/bob/index.php/');
 
 -- --------------------------------------------------------
 
